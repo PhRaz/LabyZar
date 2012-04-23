@@ -519,16 +519,16 @@ proc display {laby {type flat}} {
     if {$type == "hexa"} {
 	
 	set laby_display(translation_h.front) [list \
-						   [expr $middle - $size  * $grid_unit * $cos_PI_6] \
-						   [expr $middle + $size * $grid_unit *  $sin_PI_6]]
+						   [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
+						   [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
 
 	set laby_display(translation_h.top) [list \
 						 $middle \
-						 [expr $middle - $size * 2 * $grid_unit *  $sin_PI_6]]
+						 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
 
 	set laby_display(translation_h.side) [list \
-						  [expr $middle + $size * $grid_unit * $cos_PI_6] \
-						  [expr $middle + $size * $grid_unit * $sin_PI_6]]
+						  [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
+						  [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
 
     } else {
 	
