@@ -25,14 +25,11 @@ set laby_data(face) [list front side top]
 # Canvas size.
 
 set laby_display(nb_pixel) 600
-
-# Display translation vector for 2D faces.
-
-# DOC Vecteur de translation des faces du cube pour l'affichage.
-
-set laby_display(translation.front) {0 1}
-set laby_display(translation.top)   {0 0}
-set laby_display(translation.side)  {1 1}
+set laby_display(line_width) 5
+set laby_display(oval_rayon) 5
+set laby_display(color.top) blue
+set laby_display(color.front) red
+set laby_display(color.side) yellow
 
 # DOC Vecteurs de changement de repère pour l'affichage des faces du cube.
 
@@ -68,8 +65,8 @@ proc laby_create {size} {
 
     # Name of the new laby (handler).
 
-    set laby_name laby$laby_data(number)
     incr laby_data(number)
+    set laby_name laby$laby_data(number)
 
     # Number of point in the grid.
 
@@ -201,13 +198,16 @@ proc move_2d {laby face direction} {
     
     # Update counter if the next point to move on, if free.
     
+    # si un chemin ne passe pas par le point visé (pas de 2 dans le quartet
+    # correspondant au point) et que le déplacemet est effectif sur cette face
+    # alors on peut compter un point de plus pour le chemin sur cete face
+
     if {([lsearch [get_point_from_direction_2d $laby $face $move_start_to_end] 2] == -1) \
 	    && ([lsearch $move_start_to_end 1] != -1)} {
 
 	incr laby_data($laby.face.$face.used)
 
     }
-
 
     for {set i 0} {$i < 2} {incr i} {
 	
@@ -244,7 +244,7 @@ proc move_2d {laby face direction} {
     
     # Update the start and end point in the grid.
     
-    for {set i 0} { $i < 4} {incr i} {
+    for {set i 0} {$i < 4} {incr i} {
 		
 	if {[lindex $move_start_to_end $i] == 1} {
 	    lset laby_data($laby.face.$face.grid) $index_start $i 2
@@ -599,7 +599,7 @@ proc display {laby {type flat}} {
 		    
 		    set seg_type [lindex $grid $index $i]
 		    
-		    if {$seg_type == 1} {
+		    if {$seg_type == 1 || $seg_type == 2} {
 			
 			set dx [expr \
 				    $ox \
@@ -612,9 +612,17 @@ proc display {laby {type flat}} {
 			
 			# DOC On enregistre les segments de la grid en fonction des
 			# paramètres x, y et index de direction (de 1 à 4).
-			
-			set laby_display($laby.$face.segment.$x.$y.$i) \
-			    [$laby_display(canvas) create line $ox $oy $dx $dy -fill skyblue]
+
+			if {$seg_type == 1} {
+
+			    set laby_display($laby.$face.segment.$x.$y.$i) \
+				[$laby_display(canvas) create line $ox $oy $dx $dy -fill skyblue]
+
+			} else {
+
+			    set laby_display($laby.$face.segment.$x.$y.$i) \
+				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) -width $laby_display(line_width)]
+			}
 		    }
 		}
 
@@ -723,7 +731,7 @@ proc direction_3d_ok {laby index} {
 	
 	lset direction $index 1
 	
-	# DOC Calcul des coordonnées 3D du point à tester, puis recherche du
+	# Calcul des coordonnées 3D du point à tester, puis recherche du
 	# sextuplé dans le grid pour vérifier la présence d'un 2 dans la liste
 	# (ie. le point est déjà utilisé par un chemin).
 
@@ -986,10 +994,11 @@ proc generate {size} {
 		&& ($laby_data($laby1.face.top.used) == $nb_point)} {
 	    
 	    # Save the labyrinthe in file.
-	    
+
 	    set file_name [format %02d_%03d $size $goal]
 	    set out [open $file_name w]
-	    puts $out [array get laby_data $laby1.*]
+	    puts $out [array get laby_data $laby1.*] 
+	    puts $out "index $laby_data(number)"
 	    close $out
 	} 
 	
@@ -997,11 +1006,15 @@ proc generate {size} {
 
 }
 
+proc usage {} {
+    puts {laby.tcl [-gen <size>] | [-file <file_name>]}
+}
+
 # Main.
 
 # init default value 
 
-set size 5
+set size 12
 set gen 0
 
 # Parse command line arguments.
@@ -1012,21 +1025,31 @@ while {[llength $argv] > 0 } {
 
     switch -- $flag {
 
-	"-size" {
+	"-gen" {
 	    set size  [lindex $argv 1]
-	    set argv [lrange $argv 2 end]
+	    if {![string is integer -strict $size]} {
+		usage
+		exit
+	    }
 	    if {$size < 2} {
 		puts "Minimum size is 2 !"
 		exit
 	    }
-	}
-
-	"-gen" {
+	    set argv [lrange $argv 2 end]
 	    set gen 1
-	    set argv [lrange $argv 1 end]
+	    break
 	}
 
-	default { break }
+	"-file" {
+	    set file_name [lindex $argv 1] 
+	    set argv [lrange $argv 2 end]
+	    break
+	}
+
+	default { 
+	    usage 
+	    break 
+	}
     }
 }
 
@@ -1050,9 +1073,9 @@ if { $gen == 1 } {
     
     play_init $laby_display(canvas)
 
-    array set laby_data [read [open 05_48]]
-    # puts [array get laby_data]
-    display laby8 hexa
+    array set laby_data [read [open $file_name]]
+    puts [array get laby_data]
+    display laby$laby_data(index) hexa
     update
 
     puts "play the game !"
