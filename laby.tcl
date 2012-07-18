@@ -909,7 +909,7 @@ proc random_free_3d_direction {laby direction} {
     return $status
 }
 
-# Generate a labyrinthe and save it.
+# Generate a labyrinthe and save it. Affiche des informations sur le labyrinthe.
 
 proc generate {size} {
 
@@ -1006,8 +1006,29 @@ proc generate {size} {
 
 }
 
+# déplacer une face du cube dans le canvas
+proc move {face} {
+    
+    # définir le vecteur de translation de la face ; ce vecteur représente le
+    # mouvement de la face vers le centre du jeu en partant de sa position de
+    # départ
+    	    
+    set dir_x [list \
+		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
+    
+    set dir_y [list \
+		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
+
+    set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
+    set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
+		
+
+}
+
 proc usage {} {
-    puts {laby.tcl [-gen <size>] | [-file <file_name>]}
+    puts {laby.tcl [-gen <size> | -file <file_name>]}
 }
 
 # Main.
@@ -1077,6 +1098,8 @@ if { $gen == 1 } {
     puts [array get laby_data]
     display laby$laby_data(index) hexa
     update
+
+    move front 
 
     puts "play the game !"
 
