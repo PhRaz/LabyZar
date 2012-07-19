@@ -915,7 +915,6 @@ proc generate {size} {
 
     global laby_data    
 
-
 	# Check for the goal.
 	
 	set goal 0
@@ -1009,6 +1008,10 @@ proc generate {size} {
 # déplacer une face du cube dans le canvas
 proc move {face} {
     
+    global laby_display
+
+    set grid_unit [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
+
     # définir le vecteur de translation de la face ; ce vecteur représente le
     # mouvement de la face vers le centre du jeu en partant de sa position de
     # départ
@@ -1099,7 +1102,8 @@ if { $gen == 1 } {
     display laby$laby_data(index) hexa
     update
 
-    move front 
+	# TODO
+    # move front 
 
     puts "play the game !"
 
