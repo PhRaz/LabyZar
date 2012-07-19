@@ -1,1 +1,13 @@
 Labyrinthe Bizarre !
+
+Pour générer des labyrinthes (taille 5) :
+
+  $ ./laby.tcl -gen 5
+
+Les labyrinthes générés sont stockés dans le répertoire courant dans des
+fichiers.
+
+Pour afficher un labyrinthe :
+
+  $ ./laby.tcl -file <nom de fichier>
+
