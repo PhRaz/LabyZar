@@ -1,0 +1,56 @@
+#+TITLE:     doc.org
+#+AUTHOR:    Philippe RAZAVET
+#+EMAIL:     razavet@razavet-desktop
+#+DATE:      2012-04-24 mar.
+#+DESCRIPTION:
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+* laby
+- Utiliser le mot superposition ? Quand les chemins sont superposés on peut
+  avancer.
+  - http://en.wikipedia.org/wiki/Quantum_superposition
+  - http://en.wikipedia.org/wiki/Superposition_principle 
+- en superposant les 3 labyrinthes on peut faire avancer le curseur en fonction
+  de la configuration locale visible ; les mouvements possibles sont affichés en
+  vert.
+- mixage avec une image pour faire un puzzle
+- faire des animations pour montrer les chemins possibles : par exemple des
+  ascenseurs qui passent d'un point à l'autre et rendent possible le passage
+  - faire de 1/2 chemins qui se complètent pour faire un passage ; vérifier la
+    lisibilité des chemins possibles ; couleur rouge bleu et jaune pour les 3
+    parties du jeu
+  - pas de retour possible : en cas de blocage dans la progression on est ramené
+    au point de départ
+- mettre à jour la version en TCL pour faire la maquette
+- en fonction de l'intérêt voir à faire une version en code natif, faire une
+  librairie en c, portable sur toutes les plateformes, reste à faire la couche
+  graphique en fonction de la target
+- idée d'un chemin construit à la main puis compléter le logiciel qui permet de
+  faire des grands labyrinthes
+** TODO mouvement des faces
+- [ ] calcul des vecteurs de mouvements dans la grille de fond ; c'est la somme x+y pour chacune des faces
+- [ ] ajouter un tag sur les éléments des faces
+- [ ] dessiner les segments de la grille de fond et les tagger
+- [ ] tester les mouvements
+- [ ] capter les commandes de la souris pour contrôler les mouvements
+- [ ] faire une animation avec une dynamique physique
+** TODO contrôle des mouvement en fonction des chemins possibles
+- maintenir un curseur dont la position est connue dans les 3 faces (et sur la
+  grille de fond pour l'affichage dans le canvas) normalement les mouvements
+  possibles ne devrait pas faire sortir les face de l'hexagone englobant
+- en fonction de sa position on peut déterminer les mouvements possibles et donc
+  filtrer les commandes du joueur
+** TODO gestion des couleurs
+- comment gérer l'affichage des faces pour avoir une bonne comprehension du jeu?
+- on a 2 couleur max par segment, on peut donc reprendre le cercle des couleurs
+  primaires et secondaires (choisir addition  ou soustraction
+  http://fr.wikipedia.org/wiki/Couleur)
+- on peut afficher un curseur hexagonal qui englobe les chemins immédiats
