@@ -54,3 +54,10 @@
   primaires et secondaires (choisir addition  ou soustraction
   http://fr.wikipedia.org/wiki/Couleur)
 - on peut afficher un curseur hexagonal qui englobe les chemins immédiats
+* réalisation 
+- possibilité d'imprimer des labyrinthes sur du papier transparent (slide)
+- de la insérer dans un cadre permettant de la guider sur les 3 axes
+- comment faire pour matérialiser le curseur ?
+  - une diode mumineuse dans le fond du cadre qui suit (intègre) chaque
+    mouvement de slide
+
