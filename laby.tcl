@@ -31,7 +31,8 @@ set laby_display(color.top) blue
 set laby_display(color.front) red
 set laby_display(color.side) yellow
 
-# DOC Vecteurs de changement de repère pour l'affichage des faces du cube.
+# DOC Vecteurs de changement de repère pour l'affichage des faces du cube. The
+# origin of display 0,0 is at top left point.
 
 # Display transformation vector for 2D flat faces.
 
@@ -44,6 +45,9 @@ set laby_display(xy.top) {{1 0} {0 1}}
 set sin_PI_6 0.5
 set cos_PI_6 0.866025403784
 
+# Transformation application (front) :
+# x' = cos(pi/6) . x + sin(pi/6) . y
+# y' = 0         . x - 1         . y 
 set laby_display(xy_h.front) [list [list $cos_PI_6 0] [list $sin_PI_6 -1]]
 set laby_display(xy_h.side)  [list [list -$cos_PI_6 0] [list $sin_PI_6 -1]]
 set laby_display(xy_h.top)   [list [list $cos_PI_6 -$cos_PI_6] [list $sin_PI_6 $sin_PI_6]]
