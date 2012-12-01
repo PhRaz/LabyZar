@@ -1032,8 +1032,11 @@ proc move {face direction} {
 		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
 		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
 
+    puts $dir_x
+
     set x [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit) \
 	       + [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)]
+
     set y [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit) \
 	       + [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]
 
@@ -1111,6 +1114,10 @@ if { $gen == 1 } {
     puts [array get laby_data]
     display laby$laby_data(index) hexa
     update
+
+    puts "front $laby_display(xy_h.front)"
+    puts "top   $laby_display(xy_h.top)"
+    puts "side  $laby_display(xy_h.side)"
 
     # TODO
     for {set i 0} {$i < 10} {incr i} {
