@@ -1,0 +1,285 @@
+#+TITLE:     Breizh Torr' Pen (casse-tête Breton)
+#+AUTHOR:    Philippe Razavet
+#+EMAIL:     philippe.razavet@gmail.com
+#+LANGUAGE:  fr
+#+OPTIONS:   H:2 num:t toc:t \n:nil @:t ::t |:t ^:nil -:t f:t *:t TeX:t LaTeX:nil skip:nil d:nil tags:not-in-toc
+#+COLUMNS:   %58ITEM %TAGS %SCHEDULED %CLOSED
+#+TAGS:      DOC(d) FEATURE(f) BUG(b) RELEASE(r) PROCEDURE(p)
+#+SEQ_TODO:  TODO | DONE CANCELED
+
+* spécification
+
+  Développement d'un générateur de labyrinthe "brain cleaner".
+
+  Prise en compte de la contrainte suivante: on veut avoir un chemin qui va d'un
+  coin du cube à celui opposé par la diagonale.
+
+** Convention
+
+   Les commentaires associés au code sont en anglais, ainsi que les noms de
+   variables et de procédures.
+
+   Ce document faisant office de spécification (réflexions diverses, bloc note,
+   todo list...) est en français, ainsi que certains commentaires dans le code
+   pendant le développement.
+
+** Lexique
+
+   Le choix des mots est important pour l'efficacité (ie. rapport signal/bruit,
+   cohérence, redondance) du texte et des commentaires.
+
+   Lexique françis/anglais:
+   - point
+   - point occupés (en: point used)
+   - segment
+   - grille de contruction (en: grid)
+   - curseur 3D
+   - curseur 2D
+   - direction
+
+   Le chemin en 3D.
+
+   La position du curseur en 3D a une projection en 2D les trois face du cube.
+
+   Gérer des structures de données qui permettent de généraliser les traitements
+   sur l'ensemble des données.
+
+** Qu'est-ce ?
+
+   Un étrange labyrinthe dans un cube avec la projection d'un chemin sur chaque
+   face du cube. Un curseur peut parcourir le labyrinthe. Ce qui implique que
+   chaque face opposée est identique, et les labyrinthes sont des arbres
+   (ie. pas de boucle dans les chemins).
+
+   On ne considère que 3 faces du cube. Les 3 autres sont les mêmes.
+
+*** La grille 2D
+
+    Chaque face du cube est une grille 2D qui représente le labyrinthe. Un
+    ensemble de points reliés par des segments.
+
+    La grille est une liste de point indéxés par les coordonnées. Chaque point
+    est une liste de 4 entiers qui indique pour les quatres direction possibles
+    si un segment reliant un point adjacent existe ou pas. Donc un point est
+    occupé si un des entiers est différent de 0 (ie. un point est libre si tous
+    le éléments de la liste sont différents de 2).
+
+    - 0: rien,
+    - 1: chemin possible,
+    - 2: chemin utilisé.
+
+    J'ai choisie une liste plutôt que d'indexer chaque point comme un élément du
+    tableau. Est-ce la meilleure solution ?
+
+    L'ordre des points dans la liste correspond à l'ordre des colonnes en y sur
+    l'axe x.
+
+    Un point d'une face du cube est une liste de 4 entiers qui permet de gérer
+    chacune des 4 directions possibles, dans l'ordre suivant x, -x, y, -y.
+
+    Pour un point donné, du labyrinthe en cours de construction, a un point
+    adjacent libre alors le chemin qui y même est libre. Par contre si le chemin
+    est libre, alors le point adjacent correspondant peut être libre ou
+    occupé. Pour faire avancer la construction du labyrinthe, on recherche les
+    points adjacents libres.
+
+*** La grille 3D
+
+    L'algo de construction du labyrinthe est centré sur la gestion du curseur
+    dans la grille en 3D. Chaque point de la grille 3D est un sextuplé dont
+    chaque élément donnne l'état des connections du point dans chacune des 6
+    directions possibles..
+
+*** Repère
+
+    [[laby.png]]
+
+* release log
+#+BEGIN: columnview :hlines 1 :id local :maxlevel 3
+| ITEM                                                       | TAGS | SCHEDULED | CLOSED               |
+|------------------------------------------------------------+------+-----------+----------------------|
+| * release log                                              |      |           |                      |
+| ** DONE 0.1 première release                               |      |           | 2009-03-06 Fri 13:05 |
+| ** 0.2                                                     |      |           |                      |
+| *** DONE afficher le chemin de retour                      |      |           | 2009-03-12 Thu 15:55 |
+| *** DONE compteurs                                         |      |           | 2009-03-13 Fri 13:03 |
+| *** DONE Paramétrage de size en ligne de commande          |      |           | 2009-03-13 Fri 13:03 |
+| *** DONE affichage d'une forme hexagonale                  |      |           | 2009-03-17 Tue 13:24 |
+| *** DONE compteurs                                         |      |           | 2009-03-17 Tue 13:24 |
+| *** DONE généralisation de la fonction d'affichage         |      |           | 2009-03-18 Wed 16:51 |
+| *** DONE enregistrement des labyrinthes                    |      |           | 2009-03-24 Tue 11:49 |
+| *** TODO functions de conversion point/verteur/coordonnées |      |           |                      |
+| *** TODO check identité de laby                            |      |           |                      |
+| *** TODO affichage 3D                                      |      |           |                      |
+#+END
+** DONE 0.1 première release
+   CLOSED: [2009-03-06 Fri 13:05]
+
+** 0.2
+
+*** DONE afficher le chemin de retour
+    CLOSED: [2009-03-12 Thu 15:55]
+
+    Pendant la construction du labyrinthe on affiche le chemin parcouru par le
+    curseur depuis le point de départ dans une couleur différentes.
+
+    La couleur n'est d'un seul morceau. Le chemin sur une face 2D est une
+    projection du chemin 3D donc il y a des "trous de couleur".
+
+*** DONE compteurs
+    CLOSED: [2009-03-13 Fri 13:03]
+
+    Calculer le nombre de points occupés sur les faces 2D et le cube 3D.
+
+*** DONE Paramétrage de size en ligne de commande
+    CLOSED: [2009-03-13 Fri 13:03]
+
+*** DONE affichage d'une forme hexagonale
+    CLOSED: [2009-03-17 Tue 13:24]
+
+    Affichage des faces du cube dans un hexagone pour visualiser l'aspect
+    qu'aurait une réalisation en bois. Calcul de la position des points de
+    départ.
+
+*** DONE compteurs
+    CLOSED: [2009-03-17 Tue 13:24]
+
+    Nombres de points des faces. Longueur du chemin 3D juqu'a l'arrivée.
+
+*** DONE généralisation de la fonction d'affichage
+    CLOSED: [2009-03-18 Wed 16:51]
+
+    Normalement on doit pouvoir généraliser la fonction d'affichage avec la
+    présentation "flat" en paramétrant la transformation.
+
+*** DONE enregistrement des labyrinthes
+    CLOSED: [2009-03-24 Tue 11:49]
+
+    Sérialisation de données TCL. Pour les gros labyrinthe ça fait beaucoup de
+    donnée; peut-être faire un fichier pour un labyrinthe (utilisation du file
+    system !) ?
+
+    Récupération de la proc trouvée dans le wiki TCL.
+
+    PB de la relecture des labyrinthes. Le tableau indexe chaque nouveau
+    labyrinthe avec un nouveau numéro (id reprise du gestionnaire de dans mon
+    livre de TCL, pas forcement adpatée dans ce cas), son nom change à chaque
+    tour. Faut il gérer plusieurs labyrinthes dans le même tableau ?
+
+*** TODO functions de conversion point/verteur/coordonnées
+
+    Régulariser l'écriture des codes de conversion entre les différents type de
+    représentation des données.
+
+*** TODO check identité de laby
+
+    Pour vérifier que 2 labyrinthe sont les mêmes il faut sérializer les
+    informations puis rechercher la chaine resultante dans une double chaine.
+
+*** TODO affichage 3D
+
+    Utilisation du package tcl3d.
+
+* choix technique
+** langage
+
+   Ceux que je connais bien:
+   - C : simplicité de mise en oeuvre et performance.
+   - TCL : bon choix pour l'aspect synergie avec mes compétences de développeur
+     d'outils pour NORTEL, de plus, il y a une interface OpenGL disponible qui
+     marche bien et une communauté active.
+
+   Ceux qui pourraient être bien:
+   - C++
+   - Java
+
+   Clef USB pour avoir un environnement utilisable "en vacance" sur un PC
+   windows sans internet:
+   - tcl/tk
+   - doc tcl/tk
+   - emacs
+   - org-mode
+
+** librairie
+
+   OpenGL pour la partie graphique.
+
+   Autre lib ?
+
+   Appli pour le MAC ? oui/non, si oui, il vaut mieux coder en C, plutôt qu'en
+   TCL, bien que Tcl/Tk Aqua marche bien ous MAC Os X.
+
+* application
+
+** faire des motifs prédéfinis
+
+   On pourrait générer des labyrinthes avec un motif préintégré au dessin du
+   labyrinthe. Pour que le motif s'intégre au labyrinthe en cours de contruction
+   il faut pouvoir gérer un point de connexion. Ce point est occupé mais doit
+   pouvoir être utilisé comme point de passage.
+
+   J'ai pensé qu'en dessinant un chemin gagnant a la main on peut faire un
+   labyrinthe complexe, mais en fait on peut ne pas trouver un remplissage de
+   l'ensemble des faces en laissant faire le programme pour compléter.
+
+** fabriacation d'une maquette en bois
+
+
+
+** boite
+
+   Le mécanisme du labyrinthe ferme la boite. La clé est le tracé du labrinthe
+   qui est invible. On voit seulement le curseur qui apparait dans les trous aux
+   intersections des chemins. On peut afficher le tracé du labyrinthe sur une
+   plusieures face, ou afficher partiellement le tracé (par exemple selon un de
+   ses deux axes, ou une partie quelconque).
+
+   En empilant plusieures boites on peut faie un jeu à plusieurs niveaux.
+
+   Comment faire pour réinitialiser le jeu après avoir atteint le but?
+
+* calcul
+
+  Taille du chemin en fonction de la taille du labyrinthe.
+
+  | size | min | max |
+  |------+-----+-----|
+  | 2    | 3   | 5   |
+  | 3    | 6   | 26  |
+  | 4    | 9   | 51  |
+  | 5    | 12  | 124 |
+  |      |     |     |
+
+  | tasseau/perçage |       8 |          |
+  | taille laby     |       4 |          |
+  | trait de scie   |       1 |          |
+  |-----------------+---------+----------|
+  |                 | largeur | longueur |
+  | planche laby    |      88 |   360.25 |
+  | planche fond    |      92 |   376.42 |
+  |-----------------+---------+----------|
+  |                 |    cote |  arrondi |
+  | laby            |  101.61 |      101 |
+  | fond            |  106.23 |      106 |
+
+#+TBLFM: @5$2=@1$2*(3+2*@2$2)::@8$2=@5$2/cos(30);%.2f::@8$3=floor(@8$2)::@9$2=@6$2/cos(30);%.2f::@9$3=round(@9$2)::@6$2=@5$2+@1$2/2::@5$3=@8$2*3.5+(4*@3$2)/cos(30);%.2f::@6$3=@9$2*3.5+(4*@3$2)/cos(30);%.2f
+
+  Matériel:
+  - outils
+    - règle en métal
+    - équerre
+    - crayon papier
+    - ficelle
+    - perceuse sans fil
+    - foret 10 mm
+    - scie
+  - bois
+    - planche fond
+    - planche laby
+    - tasseau curseur
+    - tasseau labyrinthe
+  - colle bois
+  - vis
+  - clous
+  - entretoise
+

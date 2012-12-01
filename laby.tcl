@@ -1,9 +1,7 @@
 #!/usr/bin/env tclsh
 
-# 	$Id$
-
 # laby
-
+#
 # Auteur: Philippe Razavet <philippe.razavet@gmail.com>
 
 package require Tk
@@ -517,7 +515,7 @@ proc display {laby {type flat}} {
     # Compute the graphic unit length, use float (2.0) and round for better
     # centering of the grids.
 
-    set grid_unit [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
+    set laby_display(grid_unit) [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
 
     # Compute the display translation vectors.
 
@@ -526,30 +524,30 @@ proc display {laby {type flat}} {
     if {$type == "hexa"} {
 
 	set laby_display(translation_h.front) [list \
-						   [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
-						   [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
+						   [expr $middle - ($size - 1)  * $laby_display(grid_unit) * $cos_PI_6] \
+						   [expr $middle + ($size - 1) * $laby_display(grid_unit) *  $sin_PI_6]]
 
 	set laby_display(translation_h.top) [list \
 						 $middle \
-						 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
+						 [expr $middle - ($size - 1) * 2 * $laby_display(grid_unit) *  $sin_PI_6]]
 
 	set laby_display(translation_h.side) [list \
-						  [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
-						  [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
+						  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $cos_PI_6] \
+						  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $sin_PI_6]]
 
     } else {
 
         set laby_display(translation_h.front) [list \
-						   [expr $middle  - $size * $grid_unit] \
-						   [expr $middle  + $size * $grid_unit]]
+						   [expr $middle  - $size * $laby_display(grid_unit)] \
+						   [expr $middle  + $size * $laby_display(grid_unit)]]
 
 	set laby_display(translation_h.top) [list \
-						 [expr $middle  - $size * $grid_unit] \
-						 [expr $middle  - $size * $grid_unit]]
+						 [expr $middle  - $size * $laby_display(grid_unit)] \
+						 [expr $middle  - $size * $laby_display(grid_unit)]]
 
         set laby_display(translation_h.side) [list \
-						  [expr $middle  + $size * $grid_unit] \
-						  [expr $middle  + $size * $grid_unit]]
+						  [expr $middle  + $size * $laby_display(grid_unit)] \
+						  [expr $middle  + $size * $laby_display(grid_unit)]]
     }
 
     foreach face $laby_data(face) {
@@ -567,21 +565,21 @@ proc display {laby {type flat}} {
 	if {$type == "hexa"} {
 
 	    set dir_x [list \
-			   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
-			   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
+			   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
 
 	    set dir_y [list \
-			   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
-			   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
+			   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
 	} else {
 
 	    set dir_x [list \
-			   [expr [lindex $laby_display(xy.$face) 0 0] * $grid_unit] \
-			   [expr [lindex $laby_display(xy.$face) 0 1] * $grid_unit]]
+			   [expr [lindex $laby_display(xy.$face) 0 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy.$face) 0 1] * $laby_display(grid_unit)]]
 
 	    set dir_y [list \
-			   [expr [lindex $laby_display(xy.$face) 1 0] * $grid_unit] \
-			   [expr [lindex $laby_display(xy.$face) 1 1] * $grid_unit]]
+			   [expr [lindex $laby_display(xy.$face) 1 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy.$face) 1 1] * $laby_display(grid_unit)]]
 	}
 
 	# Get the face list of point.
@@ -623,12 +621,13 @@ proc display {laby {type flat}} {
 			if {$seg_type == 1} {
 
 			    set laby_display($laby.$face.segment.$x.$y.$i) \
-				[$laby_display(canvas) create line $ox $oy $dx $dy -fill skyblue]
+				[$laby_display(canvas) create line $ox $oy $dx $dy -fill skyblue -tag background]
 
 			} else {
 
 			    set laby_display($laby.$face.segment.$x.$y.$i) \
-				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) -width $laby_display(line_width)]
+				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) \
+				     -width $laby_display(line_width) -tag $face]
 			}
 		    }
 		}
@@ -639,7 +638,7 @@ proc display {laby {type flat}} {
 		    [$laby_display(canvas) create oval \
 			 [expr $ox - $rayon] [expr $oy - $rayon] \
 			 [expr $ox + $rayon] [expr $oy + $rayon] \
-			 -fill yellow -tag point]
+			 -fill yellow -tag "point $face"]
 	    }
 	}
     }
@@ -958,7 +957,7 @@ proc generate {size} {
 	    }
 	}
 
-	# Check if match the goal (if not already matched).
+	# Check if path reach the goal (if not already matched).
 
 	if {$goal == 0} {
 
@@ -1019,25 +1018,26 @@ proc generate {size} {
 proc move {face direction} {
 
     global laby_display
-
-    set grid_unit [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
+    global sin_PI_6
 
     # définir le vecteur de translation de la face ; ce vecteur représente le
     # mouvement de la face vers le centre du jeu en partant de sa position de
     # départ
 
     set dir_x [list \
-		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
-		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
+		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
+		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
 
     set dir_y [list \
-		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
-		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
+		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
+		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
 
-    set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
-    set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
+    set x [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit) \
+	       + [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)]
+    set y [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit) \
+	       + [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]
 
-
+    $laby_display(canvas) move $face [expr $x / 10] [expr $y / 10]
 }
 
 proc usage {} {
@@ -1112,8 +1112,12 @@ if { $gen == 1 } {
     display laby$laby_data(index) hexa
     update
 
-	# TODO
-    # move front
+    # TODO
+    for {set i 0} {$i < 10} {incr i} {
+	move top 1
+	update
+	after 50
+    }
 
     puts "play the game !"
 

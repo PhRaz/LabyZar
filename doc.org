@@ -3,7 +3,7 @@
 #+EMAIL:     razavet@razavet-desktop
 #+DATE:      2012-04-24 mar.
 #+DESCRIPTION:
-#+KEYWORDS: 
+#+KEYWORDS:
 #+LANGUAGE:  en
 #+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
 #+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
@@ -17,7 +17,7 @@
 - Utiliser le mot superposition ? Quand les chemins sont superposés on peut
   avancer.
   - http://en.wikipedia.org/wiki/Quantum_superposition
-  - http://en.wikipedia.org/wiki/Superposition_principle 
+  - http://en.wikipedia.org/wiki/Superposition_principle
 - en superposant les 3 labyrinthes on peut faire avancer le curseur en fonction
   de la configuration locale visible ; les mouvements possibles sont affichés en
   vert.
@@ -36,8 +36,9 @@
 - idée d'un chemin construit à la main puis compléter le logiciel qui permet de
   faire des grands labyrinthes
 ** TODO mouvement des faces
-- [ ] calcul des vecteurs de mouvements dans la grille de fond ; c'est la somme x+y pour chacune des faces
-- [ ] ajouter un tag sur les éléments des faces
+- [ ] calcul des vecteurs de mouvements dans la grille de fond ; c'est la somme
+      x+y des vecteurs de base pour chacune des faces
+- [X] ajouter un tag sur les éléments des faces
 - [ ] dessiner les segments de la grille de fond et les tagger
 - [ ] tester les mouvements
 - [ ] capter les commandes de la souris pour contrôler les mouvements
@@ -54,7 +55,7 @@
   primaires et secondaires (choisir addition  ou soustraction
   http://fr.wikipedia.org/wiki/Couleur)
 - on peut afficher un curseur hexagonal qui englobe les chemins immédiats
-* réalisation 
+* réalisation
 - possibilité d'imprimer des labyrinthes sur du papier transparent (slide)
 - de la insérer dans un cadre permettant de la guider sur les 3 axes
 - comment faire pour matérialiser le curseur ?
