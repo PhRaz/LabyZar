@@ -25,9 +25,9 @@ set laby_data(face) [list front side top]
 set laby_display(nb_pixel) 600
 set laby_display(line_width) 5
 set laby_display(oval_rayon) 5
-set laby_display(color.top) blue
-set laby_display(color.front) red
-set laby_display(color.side) yellow
+set laby_display(color.top) grey
+set laby_display(color.front) grey
+set laby_display(color.side) grey
 
 # DOC Vecteurs de changement de repère pour l'affichage des faces du cube. The
 # origin of display 0,0 is at top left point.
@@ -1024,23 +1024,18 @@ proc move {face direction} {
     # mouvement de la face vers le centre du jeu en partant de sa position de
     # départ
 
-    set dir_x [list \
-		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
-		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
+    set x 1
+    set y 1
 
-    set dir_y [list \
-		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
-		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
+    # transforation dans le repère de la face top
 
-    puts $dir_x
+    set xp [expr $x * [lindex $laby_display(xy_h.$face) 0 0] + $y * [lindex $laby_display(xy_h.$face) 0 1]]
+    set yp [expr $x * [lindex $laby_display(xy_h.$face) 1 0] + $y * [lindex $laby_display(xy_h.$face) 1 1]]
 
-    set x [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit) \
-	       + [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)]
+    set xp [expr $xp *  $laby_display(grid_unit) /10]
+    set yp [expr $yp *  $laby_display(grid_unit) /10]
 
-    set y [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit) \
-	       + [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]
-
-    $laby_display(canvas) move $face [expr $x / 10] [expr $y / 10]
+    $laby_display(canvas) move $face $xp $yp
 }
 
 proc usage {} {
@@ -1093,7 +1088,7 @@ while {[llength $argv] > 0 } {
 # init the canvas
 
 set laby_display(canvas) \
-    [canvas .c -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background white]
+    [canvas .c -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background black]
 
 pack $laby_display(canvas)
 update
@@ -1119,11 +1114,26 @@ if { $gen == 1 } {
     puts "top   $laby_display(xy_h.top)"
     puts "side  $laby_display(xy_h.side)"
 
-    # TODO
-    for {set i 0} {$i < 10} {incr i} {
-	move top 1
-	update
-	after 50
+    set step [expr $laby_data(laby$laby_data(index).size) - 1]
+    for {set j 0} {$j < $step} {incr j} {
+	# TODO
+	for {set i 0} {$i < 10} {incr i} {
+	    move top 1
+	    update
+	    after 50
+	}
+	after 100
+	for {set i 0} {$i < 10} {incr i} {
+	    move front 1
+	    update
+	    after 50
+	}
+	after 100
+	for {set i 0} {$i < 10} {incr i} {
+	    move side 1
+	    update
+	    after 50
+	}
     }
 
     puts "play the game !"
