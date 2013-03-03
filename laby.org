@@ -92,7 +92,10 @@
 
 *** Repère
 
-    [[laby.png]]
+    Le 0,0 des face est indiqué ar un point. Les axes x et y des faces sont
+    parallèle aux x et y du repère de l'affichage.
+
+    file:laby.png
 
 * release log
 #+BEGIN: columnview :hlines 1 :id local :maxlevel 3

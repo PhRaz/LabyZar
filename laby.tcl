@@ -25,9 +25,9 @@ set laby_data(face) [list front side top]
 set laby_display(nb_pixel) 600
 set laby_display(line_width) 5
 set laby_display(oval_rayon) 5
-set laby_display(color.top) grey
-set laby_display(color.front) grey
-set laby_display(color.side) grey
+set laby_display(color.top) gray10
+set laby_display(color.front) gray10
+set laby_display(color.side) gray10
 
 # DOC Vecteurs de changement de repère pour l'affichage des faces du cube. The
 # origin of display 0,0 is at top left point.
@@ -618,27 +618,33 @@ proc display {laby {type flat}} {
 			# DOC On enregistre les segments de la grid en fonction des
 			# paramètres x, y et index de direction (de 1 à 4).
 
-			if {$seg_type == 1} {
+			set laby_display($laby.$face.segment.$x.$y.$i) \
+			    [$laby_display(canvas) create line $ox $oy $dx $dy -fill gray8 -tags background]
 
-			    set laby_display($laby.$face.segment.$x.$y.$i) \
-				[$laby_display(canvas) create line $ox $oy $dx $dy -fill skyblue -tag background]
-
-			} else {
+			if {$seg_type == 2} {
 
 			    set laby_display($laby.$face.segment.$x.$y.$i) \
 				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) \
-				     -width $laby_display(line_width) -tag $face]
+				     -width $laby_display(line_width) -tags $face]
 			}
 		    }
 		}
 
 		# Draw the point.
 
+		if {$x == 0 && $y == 0} {
+		    set oval_color green
+		    set oval_tag "point $face"
+		} else {
+		    set oval_color gray20
+		    set oval_tag "goal point"
+		}
+
 		set laby_display($laby.$face.point.$x.$y) \
 		    [$laby_display(canvas) create oval \
 			 [expr $ox - $rayon] [expr $oy - $rayon] \
 			 [expr $ox + $rayon] [expr $oy + $rayon] \
-			 -fill yellow -tag "point $face"]
+			 -fill $oval_color -tags $oval_tag]
 	    }
 	}
     }
@@ -1018,16 +1024,15 @@ proc generate {size} {
 proc move {face direction} {
 
     global laby_display
-    global sin_PI_6
 
     # définir le vecteur de translation de la face ; ce vecteur représente le
     # mouvement de la face vers le centre du jeu en partant de sa position de
     # départ
 
-    set x 1
-    set y 1
+    set x $direction
+    set y $direction
 
-    # transforation dans le repère de la face top
+    # transforation dans le repère de la face
 
     set xp [expr $x * [lindex $laby_display(xy_h.$face) 0 0] + $y * [lindex $laby_display(xy_h.$face) 0 1]]
     set yp [expr $x * [lindex $laby_display(xy_h.$face) 1 0] + $y * [lindex $laby_display(xy_h.$face) 1 1]]
@@ -1106,37 +1111,74 @@ if { $gen == 1 } {
     play_init $laby_display(canvas)
 
     array set laby_data [read [open $file_name]]
-    puts [array get laby_data]
     display laby$laby_data(index) hexa
+
+    puts [array get laby_data]
+    puts [array get laby_display]
     update
 
     puts "front $laby_display(xy_h.front)"
     puts "top   $laby_display(xy_h.top)"
     puts "side  $laby_display(xy_h.side)"
 
-    set step [expr $laby_data(laby$laby_data(index).size) - 1]
-    for {set j 0} {$j < $step} {incr j} {
-	# TODO
-	for {set i 0} {$i < 10} {incr i} {
-	    move top 1
-	    update
-	    after 50
+    # Lister les directions jouables.
+    # Pour les 6 directions possibles on a une face qui bouge et 2 faces immobiles.
+    # Une direction est jouable si les 2 segments des faces immobiles sont ouverts.
+
+    # pour chaque face on 2 directions de mouvement possibles ...
+    # Il faut partir du labyrinthe en 3D (la grid), se positionner en 0 et tester les directions possibles.
+    # Ensuite en fonction on allume les segments graphique.
+
+    set play_laby laby$laby_data(index)
+    set origin [expr $laby_data($play_laby.size) - 1]
+    set play_cursor [list $origin $origin $origin]
+
+    set play_segment_list [play_display_path $play_laby $play_cursor]
+
+     if {0} {
+	# demo de mouvement des faces
+	set step [expr $laby_data(laby$laby_data(index).size) - 1]
+	for {set j 0} {$j < $step} {incr j} {
+	    # TODO
+	    for {set i 0} {$i < 10} {incr i} {
+		move top 1
+		update
+		after 50
+	    }
+	    after 100
+	    for {set i 0} {$i < 10} {incr i} {
+		move front 1
+		update
+		after 50
+	    }
+	    after 100
+	    for {set i 0} {$i < 10} {incr i} {
+		move side 1
+		update
+		after 50
+	    }
 	}
-	after 100
-	for {set i 0} {$i < 10} {incr i} {
-	    move front 1
-	    update
-	    after 50
-	}
-	after 100
-	for {set i 0} {$i < 10} {incr i} {
-	    move side 1
-	    update
-	    after 50
+	for {set j 0} {$j < $step} {incr j} {
+	    # TODO
+	    for {set i 0} {$i < 10} {incr i} {
+		move top -1
+		update
+		after 50
+	    }
+	    after 100
+	    for {set i 0} {$i < 10} {incr i} {
+		move front -1
+		update
+		after 50
+	    }
+	    after 100
+	    for {set i 0} {$i < 10} {incr i} {
+		move side -1
+		update
+		after 50
+	    }
 	}
     }
-
-    puts "play the game !"
 
     vwait forever
 }
