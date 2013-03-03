@@ -634,10 +634,10 @@ proc display {laby {type flat}} {
 
 		if {$x == 0 && $y == 0} {
 		    set oval_color green
-		    set oval_tag "point $face"
+		    set oval_tag "$face point goal"
 		} else {
 		    set oval_color gray20
-		    set oval_tag "goal point"
+		    set oval_tag "point $face"
 		}
 
 		set laby_display($laby.$face.point.$x.$y) \
