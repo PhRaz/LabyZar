@@ -7,7 +7,26 @@ Pour générer des labyrinthes (taille 5) :
 Les labyrinthes générés sont stockés dans le répertoire courant dans des
 fichiers.
 
-Pour afficher un labyrinthe :
+Pour afficher et jouer avec un labyrinthe :
 
   $ ./laby.tcl -file <nom de fichier>
 
+Le joueur déplace le curseur central dans une des directions indiquées par les segments blancs.
+A chaque mouvement du curseur le labyrinthe se modifie et de nouveaux segments apparaissent en blanc.
+Le but du jeu est de supperposer les 3 points verts.
+
+Les 6 mouvements possibles sont les suivants :
+
+1   2   3
+ \  |  /
+   \|/
+   /|\
+ /  |  \
+4   5   6
+
+1 : shift left
+2 : up
+3 : shoft right
+4 : left
+5 : down
+6 : right
