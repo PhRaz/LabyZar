@@ -30,3 +30,8 @@ Les 6 mouvements possibles sont les suivants :
 4 : left
 5 : down
 6 : right
+
+_next_
+
+utilisation de tkpath pour afficher des labyrinthe en creux plus réaliste 
+c.f. http://wiki.tcl.tk/37922
