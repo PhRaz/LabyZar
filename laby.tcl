@@ -1111,7 +1111,13 @@ while {[llength $argv] > 0 } {
 set laby_display(canvas) \
     [canvas .c -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background black]
 
-pack $laby_display(canvas)
+pack $laby_display(canvas) -side left
+
+set laby_display(canvas_2) \
+    [canvas .c_2 -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background black]
+
+pack $laby_display(canvas_2) -side right
+
 update
 
 if { $gen == 1 } {
@@ -1129,8 +1135,16 @@ if { $gen == 1 } {
     array set laby_data [read [open $file_name]]
     display laby$laby_data(index) hexa
 
+    polygon laby$laby_data(index) front
+    puts "polygon"
+    puts ""
+    puts [array get polygon]
+    puts ""
+    polygon_draw $laby_display(canvas_2) front
+
     puts [array get laby_data]
     puts [array get laby_display]
+
     update
 
     puts "front $laby_display(xy_h.front)"
