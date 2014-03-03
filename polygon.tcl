@@ -50,7 +50,7 @@ proc polygon {laby face} {
     # Premier point du polygone.
 
     set polygon($face) [list]
-    lappend polygon($face) [expr $x - 0.2] [expr $y - 0.2]
+    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
 
     while { ! $complete } {
 
@@ -65,12 +65,12 @@ proc polygon {laby face} {
 		    set y [expr $y - 1]
 		    set position 3
 		    # ajouter un point dans la liste du polygone
-		    lappend polygon($face) [expr $x - 0.2] [expr $y + 0.2]
+		    lappend polygon($face) [expr $x - 0.1] [expr $y + 0.1]
 		} else {
 		    # rester sur le même point aller vers la position en haut à droite
 		    set position 1
 		    # ajouter un point dans la liste du polygone
-		    lappend polygon($face) [expr $x + 0.2] [expr $y - 0.2]
+		    lappend polygon($face) [expr $x + 0.1] [expr $y - 0.1]
 		}
 	    }
 
@@ -78,10 +78,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 0]} {
 		    set x [expr $x + 1]
 		    set position 0
-		    lappend polygon($face) [expr $x - 0.2] [expr $y - 0.2]
+		    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
 		} else {
 		    set position 2
-		    lappend polygon($face) [expr $x + 0.2] [expr $y + 0.2]
+		    lappend polygon($face) [expr $x + 0.1] [expr $y + 0.1]
 		}
 	    }
 
@@ -89,10 +89,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 2]} {
 		    set y [expr $y + 1]
 		    set position 1
-		    lappend polygon($face) [expr $x + 0.2] [expr $y - 0.2]
+		    lappend polygon($face) [expr $x + 0.1] [expr $y - 0.1]
 		} else {
 		    set position 3
-		    lappend polygon($face) [expr $x - 0.2] [expr $y + 0.2]
+		    lappend polygon($face) [expr $x - 0.1] [expr $y + 0.1]
 		}
 	    }
 
@@ -100,10 +100,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 1]} {
 		    set x [expr $x - 1]
 		    set position 2
-		    lappend polygon($face) [expr $x + 0.2] [expr $y + 0.2]
+		    lappend polygon($face) [expr $x + 0.1] [expr $y + 0.1]
 		} else {
 		    set position 0
-		    lappend polygon($face) [expr $x - 0.2] [expr $y - 0.2]
+		    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
 		}
 	    }
 	}
@@ -115,12 +115,9 @@ proc polygon_draw {canvas face} {
 
     global polygon
 
-    $canvas create rectangle 10 10 100 100 -fill white
-    $canvas create polygon 10 10 120 30 130 200 -fill red
-
     for {set i 0} {$i < [llength $polygon($face)]} {incr i} {
 	puts "$i : [lindex $polygon($face) $i]"
-    	lreplace polygon($face) $i $i [expr [lindex $polygon($face) $i] * 100]
+    	set polygon($face) [lreplace $polygon($face) $i $i [expr [lindex $polygon($face) $i] * 60 + 20]]
     }
 
     $canvas create polygon $polygon($face) -fill white
