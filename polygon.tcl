@@ -14,6 +14,7 @@
 #   v
 #   Y
 
+
 # direction x, -x, y, -y
 proc check_path {laby face x y direction} {
 
@@ -33,6 +34,8 @@ proc polygon {laby face} {
     global laby_data
     global polygon
 
+    set WALL_WIDTH 0.45
+
     set complete 0
     set grid $laby_data($laby.face.$face.grid)
 
@@ -50,7 +53,8 @@ proc polygon {laby face} {
     # Premier point du polygone.
 
     set polygon($face) [list]
-    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
+    lappend polygon($face) -1 -1 9 -1 9 9 -1 9 -1 -1
+    lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 
     while { ! $complete } {
 
@@ -65,12 +69,12 @@ proc polygon {laby face} {
 		    set y [expr $y - 1]
 		    set position 3
 		    # ajouter un point dans la liste du polygone
-		    lappend polygon($face) [expr $x - 0.1] [expr $y + 0.1]
+		    lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y + $WALL_WIDTH]
 		} else {
 		    # rester sur le même point aller vers la position en haut à droite
 		    set position 1
 		    # ajouter un point dans la liste du polygone
-		    lappend polygon($face) [expr $x + 0.1] [expr $y - 0.1]
+		    lappend polygon($face) [expr $x + $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 		}
 	    }
 
@@ -78,10 +82,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 0]} {
 		    set x [expr $x + 1]
 		    set position 0
-		    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
+		    lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 		} else {
 		    set position 2
-		    lappend polygon($face) [expr $x + 0.1] [expr $y + 0.1]
+		    lappend polygon($face) [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]
 		}
 	    }
 
@@ -89,10 +93,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 2]} {
 		    set y [expr $y + 1]
 		    set position 1
-		    lappend polygon($face) [expr $x + 0.1] [expr $y - 0.1]
+		    lappend polygon($face) [expr $x + $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 		} else {
 		    set position 3
-		    lappend polygon($face) [expr $x - 0.1] [expr $y + 0.1]
+		    lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y + $WALL_WIDTH]
 		}
 	    }
 
@@ -100,10 +104,10 @@ proc polygon {laby face} {
 		if {[check_path $laby $face $x $y 1]} {
 		    set x [expr $x - 1]
 		    set position 2
-		    lappend polygon($face) [expr $x + 0.1] [expr $y + 0.1]
+		    lappend polygon($face) [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]
 		} else {
 		    set position 0
-		    lappend polygon($face) [expr $x - 0.1] [expr $y - 0.1]
+		    lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 		}
 	    }
 	}
@@ -117,7 +121,7 @@ proc polygon_draw {canvas face} {
 
     for {set i 0} {$i < [llength $polygon($face)]} {incr i} {
 	puts "$i : [lindex $polygon($face) $i]"
-    	set polygon($face) [lreplace $polygon($face) $i $i [expr [lindex $polygon($face) $i] * 60 + 20]]
+    	set polygon($face) [lreplace $polygon($face) $i $i [expr [lindex $polygon($face) $i] * 40 + 60]]
     }
 
     $canvas create polygon $polygon($face) -fill white
