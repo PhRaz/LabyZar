@@ -620,8 +620,6 @@ proc display {laby {type flat}} {
 			# DOC On enregistre les segments de la grid en fonction des
 			# paramètres x, y et index de direction (de 1 à 4).
 
-			# si on supprime ce segment de liaison ça pose un problème dans la fonction de construction des
-			# labys
 			set laby_display($laby.$face.segment.$x.$y.$i) \
 			    [$laby_display(canvas) create line $ox $oy $dx $dy -fill gray20 -tags "background"]
 
@@ -1136,11 +1134,10 @@ if { $gen == 1 } {
     display laby$laby_data(index) hexa
 
     polygon laby$laby_data(index) front
-    puts "polygon"
-    puts ""
-    puts [array get polygon]
-    puts ""
-    polygon_draw $laby_display(canvas_2) front
+    polygon laby$laby_data(index) side
+    polygon laby$laby_data(index) top
+
+    polygon_draw $laby_display(canvas_2) side
 
     puts [array get laby_data]
     puts [array get laby_display]
