@@ -207,10 +207,10 @@ proc play_up {} {
     # déplacer le curseur
     set play_cursor [list [lindex $play_cursor 0] [expr [lindex $play_cursor 1] + 1] [lindex $play_cursor 2]]
     for {set i 0} {$i < 5} {incr i} {
-		move top -1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move top -1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments
@@ -230,12 +230,12 @@ proc play_left {} {
     set position [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
 
     if {[lindex $position 4] != 2} {
-		return
+	return
     }
 
     # effacer les segments
     foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+	$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
     }
 
     # déplacer le curseur

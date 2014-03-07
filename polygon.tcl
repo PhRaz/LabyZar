@@ -132,7 +132,7 @@ proc polygon_draw {canvas face} {
     	set polygon($face) [lreplace $polygon($face) $i $i [expr [lindex $polygon($face) $i] * 40 + 60]]
     }
 
-    $canvas create polygon $polygon($face) -fill white
+    $canvas create polygon $polygon($face) -fill white -tags $face
 
     update
 }
@@ -152,91 +152,74 @@ proc polygon_points_to_view {laby face} {
     # Compute the graphic unit length, use float (2.0) and round for better
     # centering of the grids.
 
-    set laby_display(grid_unit) [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
+    set grid_unit [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
 
     # Compute the display translation vectors.
 
     set middle  [expr $laby_display(nb_pixel) / 2]
 
+    # Compute the translation.
 
-    set laby_display(translation_h.front) [list \
-					       [expr $middle - ($size - 1)  * $laby_display(grid_unit) * $cos_PI_6] \
-					       [expr $middle + ($size - 1) * $laby_display(grid_unit) *  $sin_PI_6]]
-
-    set laby_display(translation_h.top) [list \
-					     $middle \
-					     [expr $middle - ($size - 1) * 2 * $laby_display(grid_unit) *  $sin_PI_6]]
-
-    set laby_display(translation_h.side) [list \
-					      [expr $middle + ($size - 1) * $laby_display(grid_unit) * $cos_PI_6] \
-					      [expr $middle + ($size - 1) * $laby_display(grid_unit) * $sin_PI_6]]
+    switch $face {
+	front {
+	    set translation [list \
+				 [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
+				 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
+	}
+	top {
+	    set translation [list \
+				 $middle \
+				 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
+	}
+	side {
+	    set translation [list \
+				 [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
+				 [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
+	}
+	default {
+	    puts "Fatal error"
+	    exit 1
+	}
+    }
 
     # Translation of the face origin in the display coordinates.
 
-    set orig $laby_display(translation_h.$face)
-
-    set x_orig  [lindex $orig 0]
-    set y_orig  [lindex $orig 1]
+    set x_orig  [lindex $translation 0]
+    set y_orig  [lindex $translation 1]
 
     # Computes the direction and size of base vectors in the display
     # coordinates.
 
     set dir_x [list \
-		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
-		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
+		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
 
     set dir_y [list \
-		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
-		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
+		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
 
-    # Get the face list of point.
+    # Computes the news point.
 
-    set grid $laby_data($laby.face.$face.grid)
+    set new_polygon [list]
 
-	for {set x 0} {$x < $size} {incr x} {
+    puts "Avant"
+    puts [array get polygon($face)]
 
-	    for {set y 0} {$y < $size} {incr y} {
+    foreach {x y} $polygon($face) {
 
-		# Compute the point coordinates by using the xy direction
-		# vector.
+	puts "x $x y $y"
 
-		set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
-		set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
+	# Compute the point coordinates by using the xy direction
+	# vector.
 
-		# Draw the segments between 2 points in the grid.
+	set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
+	set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
 
-		set index [expr ($x * $size) + $y]
-
-		for {set i 0} {$i < 4} {incr i} {
-
-		    set seg_type [lindex $grid $index $i]
-
-		    if {$seg_type == 1 || $seg_type == 2} {
-
-			set dx [expr \
-				    $ox \
-				    + [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_x 0] \
-				    + [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_x 1]]
-			set dy [expr \
-				    $oy \
-				    + [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_y 0] \
-				    + [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_y 1]]
-
-			# DOC On enregistre les segments de la grid en fonction des
-			# paramètres x, y et index de direction (de 1 à 4).
-
-			set laby_display($laby.$face.segment.$x.$y.$i) \
-			    [$laby_display(canvas) create line $ox $oy $dx $dy -fill gray20 -tags "background"]
-
-			if {$seg_type == 2} {
-
-			    set laby_display($laby.$face.segment.$x.$y.$i) \
-				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) \
-				     -width $laby_display(line_width) -tags $face]
-			}
-		    }
-		}
-	    }
-	}
+	lappend new_polygon $ox $oy
     }
+
+    puts "Après"
+    puts [array get new_polygon]
+
+    set polygon($face) $new_polygon
 }

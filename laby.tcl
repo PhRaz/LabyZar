@@ -1055,6 +1055,7 @@ proc move {face direction} {
     set yp [expr $yp *  $laby_display(grid_unit) / 5]
 
     $laby_display(canvas) move $face $xp $yp
+    $laby_display(canvas_2) move $face $xp $yp
 }
 
 proc usage {} {
@@ -1137,10 +1138,14 @@ if { $gen == 1 } {
     polygon laby$laby_data(index) side
     polygon laby$laby_data(index) top
 
-    polygon_draw $laby_display(canvas_2) side
+    polygon_points_to_view laby$laby_data(index) side
+    $laby_display(canvas_2) create polygon $polygon(side) -fill red
+    polygon_points_to_view laby$laby_data(index) front
+    $laby_display(canvas_2) create polygon $polygon(front) -fill blue
+    polygon_points_to_view laby$laby_data(index) top
+    $laby_display(canvas_2) create polygon $polygon(top) -fill white
 
-    puts [array get laby_data]
-    puts [array get laby_display]
+#    polygon_draw $laby_display(canvas_2) side
 
     update
 
