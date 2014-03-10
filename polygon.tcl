@@ -34,7 +34,7 @@ proc polygon {laby face} {
     global laby_data
     global polygon
 
-    set WALL_WIDTH 0.45
+    set WALL_WIDTH 0.33
 
     set complete 0
     set size $laby_data($laby.size)
@@ -58,7 +58,9 @@ proc polygon {laby face} {
     lappend polygon($face) \
 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
 	[expr $size - $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
-	[expr $size - $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
+	[expr $size - $WALL_WIDTH + $size] [expr -1 + $WALL_WIDTH + $size] \
+	[expr 2 * $size - $WALL_WIDTH] [expr 2 * $size - $WALL_WIDTH] \
+	[expr -1 + $WALL_WIDTH + $size] [expr $size - $WALL_WIDTH + $size] \
 	[expr -1 + $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH]
 
@@ -123,7 +125,17 @@ proc polygon {laby face} {
     }
 }
 
-# compute the points coordinates for the view
+# compute the frame
+
+proc todo_polygon_frame {} {
+	# fonction qui calcul un cadre à l'intérieur hexagonal autour du jeu
+}
+
+# compute the face points coordinates in the view coordinate
+
+proc todo_polygon_points_to_view {laby face} {
+	# faire une fonction qui calcule la position d'un point du repère de la face vers le repère de la vue
+}
 
 proc polygon_points_to_view {laby face} {
 
@@ -188,12 +200,7 @@ proc polygon_points_to_view {laby face} {
 
     set new_polygon [list]
 
-    puts "Avant"
-    puts [array get polygon($face)]
-
     foreach {x y} $polygon($face) {
-
-	puts "x $x y $y"
 
 	# Compute the point coordinates by using the xy direction
 	# vector.
@@ -203,9 +210,6 @@ proc polygon_points_to_view {laby face} {
 
 	lappend new_polygon $ox $oy
     }
-
-    puts "Après"
-    puts [array get new_polygon]
 
     set polygon($face) $new_polygon
 }
