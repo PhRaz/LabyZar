@@ -123,20 +123,6 @@ proc polygon {laby face} {
     }
 }
 
-proc polygon_draw {canvas face} {
-
-    global polygon
-
-    for {set i 0} {$i < [llength $polygon($face)]} {incr i} {
-	puts "$i : [lindex $polygon($face) $i]"
-    	set polygon($face) [lreplace $polygon($face) $i $i [expr [lindex $polygon($face) $i] * 40 + 60]]
-    }
-
-    $canvas create polygon $polygon($face) -fill white -tags $face
-
-    update
-}
-
 # compute the points coordinates for the view
 
 proc polygon_points_to_view {laby face} {

@@ -1145,8 +1145,6 @@ if { $gen == 1 } {
     polygon_points_to_view laby$laby_data(index) top
     $laby_display(canvas_2) create polygon $polygon(top) -fill white
 
-#    polygon_draw $laby_display(canvas_2) side
-
     update
 
     puts "front $laby_display(xy_h.front)"
