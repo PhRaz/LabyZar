@@ -1139,11 +1139,11 @@ if { $gen == 1 } {
     polygon laby$laby_data(index) top
 
     polygon_points_to_view laby$laby_data(index) side
-    $laby_display(canvas_2) create polygon $polygon(side) -fill red
+    $laby_display(canvas_2) create polygon $polygon(side) -fill red -tags side
     polygon_points_to_view laby$laby_data(index) front
-    $laby_display(canvas_2) create polygon $polygon(front) -fill blue
+    $laby_display(canvas_2) create polygon $polygon(front) -fill blue -tags front
     polygon_points_to_view laby$laby_data(index) top
-    $laby_display(canvas_2) create polygon $polygon(top) -fill white
+    $laby_display(canvas_2) create polygon $polygon(top) -fill white -tags top
 
     update
 
