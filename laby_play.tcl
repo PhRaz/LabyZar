@@ -74,8 +74,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.top.segment.$tx.$ty.0) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.0)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.0)
+		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.0) $laby_display(color.front)
+		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.0) $laby_display(color.top)
     }
 
     if {[lindex $position 1] == 2} {
@@ -85,8 +85,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.top.segment.$tx.$ty.1) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.1)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.1)
+		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.1) $laby_display(color.front)
+		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.1) $laby_display(color.top)
     }
 
     # y
@@ -98,8 +98,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.side.segment.$sx.$sy.2) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.2)
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.2)
+		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.2) $laby_display(color.front)
+		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.2) $laby_display(color.side)
     }
 
     if {[lindex $position 3] == 2} {
@@ -109,8 +109,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.side.segment.$sx.$sy.3) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.3)
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.3)
+		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.3) $laby_display(color.front)
+		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.3) $laby_display(color.side)
     }
 
     # z
@@ -122,8 +122,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.top.segment.$tx.$ty.2) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.0)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.2)
+		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.0) $laby_display(color.side)
+		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.2) $laby_display(color.top)
     }
 
     if {[lindex $position 5] == 2} {
@@ -133,8 +133,8 @@ proc play_display_path {laby cursor} {
 		$laby_display(canvas) itemconfigure \
 			$laby_display($laby.top.segment.$tx.$ty.3) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.1)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.3)
+		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.1) $laby_display(color.side)
+		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.3) $laby_display(color.top)
     }
 
 	$laby_display(canvas) lower background
@@ -166,8 +166,8 @@ proc play_down {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -200,8 +200,8 @@ proc play_up {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -234,8 +234,8 @@ proc play_left {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-	$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -268,8 +268,8 @@ proc play_right {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -302,8 +302,8 @@ proc play_s_left {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -336,8 +336,8 @@ proc play_s_right {} {
     }
 
     # effacer les segments
-    foreach segment $play_segment_list {
-		$laby_display(canvas) itemconfigure $segment -fill gray50 -width 5
+    foreach {segment color} $play_segment_list {
+    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur

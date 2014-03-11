@@ -29,9 +29,9 @@ set laby_data(face) [list front side top]
 set laby_display(nb_pixel) 600
 set laby_display(line_width) 5
 set laby_display(oval_rayon) 5
-set laby_display(color.top) gray50
-set laby_display(color.front) gray50
-set laby_display(color.side) gray50
+set laby_display(color.top) yellow
+set laby_display(color.front) blue
+set laby_display(color.side) red
 
 # DOC Vecteurs de changement de repère pour l'affichage des faces du cube. The
 # origin of display 0,0 is at top left point.

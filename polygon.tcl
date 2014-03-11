@@ -34,7 +34,7 @@ proc polygon {laby face} {
     global laby_data
     global polygon
 
-    set WALL_WIDTH 0.33
+    set WALL_WIDTH 0.40
 
     set complete 0
     set size $laby_data($laby.size)
@@ -58,10 +58,8 @@ proc polygon {laby face} {
     lappend polygon($face) \
 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
 	[expr $size - $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
-	[expr $size - $WALL_WIDTH + $size] [expr -1 + $WALL_WIDTH + $size] \
-	[expr 2 * $size - $WALL_WIDTH] [expr 2 * $size - $WALL_WIDTH] \
-	[expr -1 + $WALL_WIDTH + $size] [expr $size - $WALL_WIDTH + $size] \
-	[expr -1 + $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
+	[expr $size - $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
+	[expr -1 + $WALL_WIDTH] [expr $size - $WALL_WIDTH ] \
 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH]
 
     lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH]
