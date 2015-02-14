@@ -55,12 +55,14 @@ proc polygon {laby face} {
 
     set polygon($face) [list]
 
-    # lappend polygon($face) \
-    # 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
-    # 	[expr $size - $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
-    # 	[expr $size - $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
-    # 	[expr -1 + $WALL_WIDTH] [expr $size - $WALL_WIDTH ] \
-    # 	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH]
+    # en activant cette ligne on obtient des chemins en creux
+    # en desactivant cette ligne on obtient des chemins en plein
+    lappend polygon($face) \
+     	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
+     	[expr $size - $WALL_WIDTH] [expr -1 + $WALL_WIDTH] \
+     	[expr $size - $WALL_WIDTH] [expr $size - $WALL_WIDTH] \
+     	[expr -1 + $WALL_WIDTH] [expr $size - $WALL_WIDTH ] \
+     	[expr -1 + $WALL_WIDTH] [expr -1 + $WALL_WIDTH]
 
     lappend polygon($face) [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH]
 
@@ -121,18 +123,6 @@ proc polygon {laby face} {
 	}
 	set complete [expr (($x == 0) && ($y == 0) && ($position == 0)) ]
     }
-}
-
-# compute the frame
-
-proc todo_polygon_frame {} {
-	# fonction qui calcul un cadre à l'intérieur hexagonal autour du jeu
-}
-
-# compute the face points coordinates in the view coordinate
-
-proc todo_polygon_points_to_view {laby face} {
-	# faire une fonction qui calcule la position d'un point du repère de la face vers le repère de la vue
 }
 
 proc polygon_points_to_view {laby face} {

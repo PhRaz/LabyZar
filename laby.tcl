@@ -1067,15 +1067,21 @@ proc usage {} {
 # init default value
 
 set size 12
-set gen 0
+set gen_option 0
+set file_option 0
+
+if {[llength $argv] == 0 } {
+    usage
+    exit 1
+}
 
 # Parse command line arguments.
 
 while {[llength $argv] > 0 } {
 
-    set flag [lindex $argv 0]
+    set option [lindex $argv 0]
 
-    switch -- $flag {
+    switch -- $option {
 
 	"-gen" {
 	    set size  [lindex $argv 1]
@@ -1088,21 +1094,27 @@ while {[llength $argv] > 0 } {
 		exit
 	    }
 	    set argv [lrange $argv 2 end]
-	    set gen 1
-	    break
+	    set gen_option 1
 	}
 
 	"-file" {
 	    set file_name [lindex $argv 1]
 	    set argv [lrange $argv 2 end]
-	    break
+	    set file_option 1
 	}
 
 	default {
+	    puts "unknown option $option"
 	    usage
-	    break
+	    exit 0
 	}
     }
+}
+
+if {$file_option == 1 && $gen_option == 1} {
+    puts "options -file and -gen are mutually exclusives"
+    usage
+    exit 1
 }
 
 # init the canvas
@@ -1119,12 +1131,10 @@ pack $laby_display(canvas_2) -side right
 
 update
 
-if { $gen == 1 } {
+if { $gen_option == 1 } {
 
     while {1} {
-
 	generate $size
-
     }
 
 } else {
@@ -1168,4 +1178,5 @@ if { $gen == 1 } {
     vwait forever
 }
 
-exit
+exit 0
+
