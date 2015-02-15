@@ -12,8 +12,8 @@ proc play_init {canvas} {
     # init pour l'utilisation des touches du clavier
     bind . <Key-Up> {play_up}
     bind . <Key-Down> {
-		play_down
-		puts [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
+	play_down
+	puts [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
     }
     bind . <Key-Left> {play_left}
     bind . <Key-Right> {play_right}
@@ -69,82 +69,82 @@ proc play_display_path {laby cursor} {
 
     if {[lindex $position 0] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.front.segment.$fx.$fy.0) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.top.segment.$tx.$ty.0) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.front.segment.$fx.$fy.0) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.top.segment.$tx.$ty.0) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.0) $laby_display(color.front)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.0) $laby_display(color.top)
+	lappend segment_list $laby_display($laby.front.segment.$fx.$fy.0) $laby_display(color.front)
+	lappend segment_list $laby_display($laby.top.segment.$tx.$ty.0) $laby_display(color.top)
     }
 
     if {[lindex $position 1] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.front.segment.$fx.$fy.1) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.top.segment.$tx.$ty.1) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.front.segment.$fx.$fy.1) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.top.segment.$tx.$ty.1) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.1) $laby_display(color.front)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.1) $laby_display(color.top)
+	lappend segment_list $laby_display($laby.front.segment.$fx.$fy.1) $laby_display(color.front)
+	lappend segment_list $laby_display($laby.top.segment.$tx.$ty.1) $laby_display(color.top)
     }
 
     # y
 
     if {[lindex $position 2] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.front.segment.$fx.$fy.2) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.side.segment.$sx.$sy.2) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.front.segment.$fx.$fy.2) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.side.segment.$sx.$sy.2) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.2) $laby_display(color.front)
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.2) $laby_display(color.side)
+	lappend segment_list $laby_display($laby.front.segment.$fx.$fy.2) $laby_display(color.front)
+	lappend segment_list $laby_display($laby.side.segment.$sx.$sy.2) $laby_display(color.side)
     }
 
     if {[lindex $position 3] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.front.segment.$fx.$fy.3) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.side.segment.$sx.$sy.3) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.front.segment.$fx.$fy.3) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.side.segment.$sx.$sy.3) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.front.segment.$fx.$fy.3) $laby_display(color.front)
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.3) $laby_display(color.side)
+	lappend segment_list $laby_display($laby.front.segment.$fx.$fy.3) $laby_display(color.front)
+	lappend segment_list $laby_display($laby.side.segment.$sx.$sy.3) $laby_display(color.side)
     }
 
     # z
 
     if {[lindex $position 4] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.side.segment.$sx.$sy.0) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.top.segment.$tx.$ty.2) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.side.segment.$sx.$sy.0) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.top.segment.$tx.$ty.2) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.0) $laby_display(color.side)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.2) $laby_display(color.top)
+	lappend segment_list $laby_display($laby.side.segment.$sx.$sy.0) $laby_display(color.side)
+	lappend segment_list $laby_display($laby.top.segment.$tx.$ty.2) $laby_display(color.top)
     }
 
     if {[lindex $position 5] == 2} {
 
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.side.segment.$sx.$sy.1) -fill white -width 5
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.top.segment.$tx.$ty.3) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.side.segment.$sx.$sy.1) -fill white -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.top.segment.$tx.$ty.3) -fill white -width 5
 
-		lappend segment_list $laby_display($laby.side.segment.$sx.$sy.1) $laby_display(color.side)
-		lappend segment_list $laby_display($laby.top.segment.$tx.$ty.3) $laby_display(color.top)
+	lappend segment_list $laby_display($laby.side.segment.$sx.$sy.1) $laby_display(color.side)
+	lappend segment_list $laby_display($laby.top.segment.$tx.$ty.3) $laby_display(color.top)
     }
 
-	$laby_display(canvas) lower background
+    $laby_display(canvas) lower background
 
-	foreach s $segment_list {
-		$laby_display(canvas) raise $s
-	}
+    foreach s $segment_list {
+	$laby_display(canvas) raise $s
+    }
 
-	$laby_display(canvas) raise point
-	$laby_display(canvas) raise goal
+    $laby_display(canvas) raise point
+    $laby_display(canvas) raise goal
 
     return $segment_list
 }
@@ -162,21 +162,21 @@ proc play_down {} {
     set position [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
 
     if {[lindex $position 3] != 2} {
-		return
+	return
     }
 
     # effacer les segments
     foreach {segment color} $play_segment_list {
-    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
+	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
     set play_cursor [list [lindex $play_cursor 0] [expr [lindex $play_cursor 1] - 1] [lindex $play_cursor 2]]
     for {set i 0} {$i < 5} {incr i} {
-		move top 1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move top 1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments
@@ -196,12 +196,12 @@ proc play_up {} {
     set position [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
 
     if {[lindex $position 2] != 2} {
-		return
+	return
     }
 
     # effacer les segments
     foreach {segment color} $play_segment_list {
-    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
+	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
@@ -241,10 +241,10 @@ proc play_left {} {
     # déplacer le curseur
     set play_cursor [list [lindex $play_cursor 0] [lindex $play_cursor 1] [expr [lindex $play_cursor 2] + 1]]
     for {set i 0} {$i < 5} {incr i} {
-		move front -1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move front -1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments
@@ -264,21 +264,21 @@ proc play_right {} {
     set position [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
 
     if {[lindex $position 0] != 2} {
-		return
+	return
     }
 
     # effacer les segments
     foreach {segment color} $play_segment_list {
-    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
+	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
     set play_cursor [list [expr [lindex $play_cursor 0] + 1] [lindex $play_cursor 1] [lindex $play_cursor 2]]
     for {set i 0} {$i < 5} {incr i} {
-		move side -1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move side -1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments
@@ -298,21 +298,21 @@ proc play_s_left {} {
     set position [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
 
     if {[lindex $position 1] != 2} {
-		return
+	return
     }
 
     # effacer les segments
     foreach {segment color} $play_segment_list {
-    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
+	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
     set play_cursor [list [expr [lindex $play_cursor 0] - 1] [lindex $play_cursor 1] [lindex $play_cursor 2]]
     for {set i 0} {$i < 5} {incr i} {
-		move side 1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move side 1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments
@@ -337,16 +337,16 @@ proc play_s_right {} {
 
     # effacer les segments
     foreach {segment color} $play_segment_list {
-    		$laby_display(canvas) itemconfigure $segment -fill $color -width 5
+	$laby_display(canvas) itemconfigure $segment -fill $color -width 5
     }
 
     # déplacer le curseur
     set play_cursor [list [lindex $play_cursor 0] [lindex $play_cursor 1] [expr [lindex $play_cursor 2] - 1]]
     for {set i 0} {$i < 5} {incr i} {
-		move front 1
-		$laby_display(canvas) raise goal
-		update
-		after 50
+	move front 1
+	$laby_display(canvas) raise goal
+	update
+	after 50
     }
 
     # afficher les nouveaux segments

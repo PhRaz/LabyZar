@@ -14,6 +14,10 @@ source laby_play.tcl
 
 source polygon.tcl
 
+# half path form of labyrinthe
+
+source demi.tcl
+
 # The global laby data array.
 
 set laby_data(number) 0
@@ -1087,11 +1091,11 @@ while {[llength $argv] > 0 } {
 	    set size  [lindex $argv 1]
 	    if {![string is integer -strict $size]} {
 		usage
-		exit
+		exit 1
 	    }
 	    if {$size < 2} {
 		puts "Minimum size is 2 !"
-		exit
+		exit 1
 	    }
 	    set argv [lrange $argv 2 end]
 	    set gen_option 1
@@ -1099,6 +1103,10 @@ while {[llength $argv] > 0 } {
 
 	"-file" {
 	    set file_name [lindex $argv 1]
+	    if {! [file exists $file_name]} {
+		puts "file $file_name not found"
+		exit 1
+	    }
 	    set argv [lrange $argv 2 end]
 	    set file_option 1
 	}
@@ -1137,23 +1145,55 @@ if { $gen_option == 1 } {
 	generate $size
     }
 
-} else {
+}
+
+if { $file_option == 1} {
+
+    # init the event handlers for user action
 
     play_init $laby_display(canvas)
 
+    # load the game play
+
     array set laby_data [read [open $file_name]]
+
+    # display hexa representation
+
     display laby$laby_data(index) hexa
 
-    polygon laby$laby_data(index) front
-    polygon laby$laby_data(index) side
-    polygon laby$laby_data(index) top
+    # display polygonal representation
 
-    polygon_points_to_view laby$laby_data(index) side
-    $laby_display(canvas_2) create polygon $polygon(side) -fill red -tags side
-    polygon_points_to_view laby$laby_data(index) front
-    $laby_display(canvas_2) create polygon $polygon(front) -fill blue -tags front
-    polygon_points_to_view laby$laby_data(index) top
-    $laby_display(canvas_2) create polygon $polygon(top) -fill white -tags top
+    # polygon laby$laby_data(index) front
+    # polygon laby$laby_data(index) side
+    # polygon laby$laby_data(index) top
+
+    # polygon_points_to_view laby$laby_data(index) front
+    # $laby_display(canvas_2) create polygon $polygon(front) -fill blue -tags front
+    # polygon_points_to_view laby$laby_data(index) side
+    # $laby_display(canvas_2) create polygon $polygon(side) -fill red -tags side
+    # polygon_points_to_view laby$laby_data(index) top
+    # $laby_display(canvas_2) create polygon $polygon(top) -fill white -tags top
+
+    # display demi path representatin
+
+    demi laby$laby_data(index) front
+    demi laby$laby_data(index) side
+    demi laby$laby_data(index) top
+
+    demi_points_to_view laby$laby_data(index) front
+    demi_points_to_view laby$laby_data(index) side
+    demi_points_to_view laby$laby_data(index) top
+
+    foreach path $demi_path_list(side) {
+	puts $path
+	$laby_display(canvas_2) create polygon $path -fill red -tags side
+    }
+    foreach path $demi_path_list(front) {
+	$laby_display(canvas_2) create polygon $path -fill blue -tags front
+    }
+    foreach path $demi_path_list(top) {
+	$laby_display(canvas_2) create polygon $path -fill white -tags top
+    }
 
     update
 
