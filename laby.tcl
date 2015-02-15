@@ -1133,7 +1133,7 @@ set laby_display(canvas) \
 pack $laby_display(canvas) -side left
 
 set laby_display(canvas_2) \
-    [canvas .c_2 -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background black]
+    [canvas .c_2 -height $laby_display(nb_pixel) -width $laby_display(nb_pixel) -background white]
 
 pack $laby_display(canvas_2) -side right
 
@@ -1187,13 +1187,13 @@ if { $file_option == 1} {
 
     foreach path $demi_path_list(side) {
 	puts $path
-	$laby_display(canvas_2) create polygon $path -fill red -tags side
+	$laby_display(canvas_2) create polygon $path -fill black -tags side
     }
     foreach path $demi_path_list(front) {
-	$laby_display(canvas_2) create polygon $path -fill blue -tags front
+	$laby_display(canvas_2) create polygon $path -fill black -tags front
     }
     foreach path $demi_path_list(top) {
-	$laby_display(canvas_2) create polygon $path -fill white -tags top
+	$laby_display(canvas_2) create polygon $path -fill black -tags top
     }
     set rayon 7
     foreach goal $goals {
@@ -1227,6 +1227,11 @@ if { $file_option == 1} {
     set play_cursor [list $origin $origin $origin]
 
     set play_segment_list [play_display_path $play_laby $play_cursor]
+
+    raise .
+    focus .
+
+
 
     vwait forever
 }
