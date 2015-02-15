@@ -1158,7 +1158,6 @@ if { $file_option == 1} {
     array set laby_data [read [open $file_name]]
 
     # display hexa representation
-
     display laby$laby_data(index) hexa
 
     # display polygonal representation
@@ -1184,6 +1183,8 @@ if { $file_option == 1} {
     demi_points_to_view laby$laby_data(index) side
     demi_points_to_view laby$laby_data(index) top
 
+    demi_goals_and_cursor laby$laby_data(index)
+
     foreach path $demi_path_list(side) {
 	puts $path
 	$laby_display(canvas_2) create polygon $path -fill red -tags side
@@ -1194,6 +1195,18 @@ if { $file_option == 1} {
     foreach path $demi_path_list(top) {
 	$laby_display(canvas_2) create polygon $path -fill white -tags top
     }
+    set rayon 7
+    foreach goal $goals {
+	$laby_display(canvas_2) create oval \
+	    [expr [lindex $goal 0] - $rayon] [expr [lindex $goal 1] - $rayon] \
+	    [expr [lindex $goal 0] + $rayon] [expr [lindex $goal 1] + $rayon] \
+	    -fill green -tags [lindex $goal 2]
+    }
+    set rayon 9
+    $laby_display(canvas_2) create oval \
+	[expr [lindex $cursor 0] - $rayon] [expr [lindex $cursor 1] - $rayon] \
+	[expr [lindex $cursor 0] + $rayon] [expr [lindex $cursor 1] + $rayon] \
+	-outline red -width 3 -tags [lindex $cursor 2]
 
     update
 
