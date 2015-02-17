@@ -23,7 +23,7 @@ proc demi {laby face} {
     global laby_data
     global demi_path_list
 
-    set WALL_WIDTH 0.03
+    set WALL_WIDTH 0.20
 
     set size $laby_data($laby.size)
     set grid $laby_data($laby.face.$face.grid)
@@ -34,7 +34,7 @@ proc demi {laby face} {
     for {set x 0} {$x < $size} {incr x} {
 		for {set y 0} {$y < $size} {incr y} {
 
-			# path on y direction
+			# path on x direction
 
 			if {[demi_check_path $laby $face $x $y 0]} {
 				# chaques polygones de la liste est une liste de 4 points
@@ -65,7 +65,8 @@ proc demi {laby face} {
 					}
 				}
 			}
-			# path on x direction
+
+			# path on y direction
 
 			if {[demi_check_path $laby $face $x $y 2]} {
 				switch $face {
