@@ -23,7 +23,8 @@ proc demi {laby face} {
     global laby_data
     global demi_path_list
 
-    set WALL_WIDTH 0.20
+
+    set WALL_WIDTH 0.2
 
     set size $laby_data($laby.size)
     set grid $laby_data($laby.face.$face.grid)
@@ -40,8 +41,8 @@ proc demi {laby face} {
 			lappend demi_path_list($face) [list \
 							   [expr $x] [expr $y - $WALL_WIDTH] \
 							   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-							   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-							   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+							   [expr $x + 0.5 + 0.5 * $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 0.5 - 0.5 * $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
 			lappend demi_path_list($face) red
 		    }
 		    side {
@@ -54,10 +55,10 @@ proc demi {laby face} {
 		    }
 		    top {
 			lappend demi_path_list($face) [list \
-							   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 0.5 + 0.5 * $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
 							   [expr $x + 1] [expr $y + $WALL_WIDTH] \
 							   [expr $x + 1 - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-							   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+							   [expr $x + 0.5 - 0.5 * $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
 			lappend demi_path_list($face) red
 		    }
 		}
