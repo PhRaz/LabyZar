@@ -99,56 +99,56 @@ proc laby_create {size} {
 
     foreach face $laby_data(face) {
 
-		# Number of point used is set to 1.
+	# Number of point used is set to 1.
 
-		set laby_data($laby_name.face.$face.used) 1
+	set laby_data($laby_name.face.$face.used) 1
 
-		# The cursor position.
+	# The cursor position.
 
-		set laby_data($laby_name.face.$face.cursor.position) {0 0}
+	set laby_data($laby_name.face.$face.cursor.position) {0 0}
 
-		# Initialize the grid as a list.
+	# Initialize the grid as a list.
 
-		# DOC l'ordre des points dans la liste correspond à l'ordre des colonnes
-		# en y sur l'axe x.
+	# DOC l'ordre des points dans la liste correspond à l'ordre des colonnes
+	# en y sur l'axe x.
 
-		for {set x 0} {$x < $size} {incr x} {
-			for {set y 0} {$y < $size} {incr y} {
+	for {set x 0} {$x < $size} {incr x} {
+	    for {set y 0} {$y < $size} {incr y} {
 
-				# DOC Un point d'une face du cube est une liste de 4 entiers qui
-				# permet de gérer chacune des 4 directions possibles, dans
-				# l'ordre suivant x, -x, y, -y.
+		# DOC Un point d'une face du cube est une liste de 4 entiers qui
+		# permet de gérer chacune des 4 directions possibles, dans
+		# l'ordre suivant x, -x, y, -y.
 
-				lappend laby_data($laby_name.face.$face.grid) \
-					[list \
-						 [expr ($x < ($size - 1)) ? 1 : 0] \
-						 [expr ($x > 0) ? 1 : 0] \
-						 [expr ($y < ($size - 1)) ? 1 : 0] \
-						 [expr ($y > 0) ? 1 :0]]
-			}
-		}
+		lappend laby_data($laby_name.face.$face.grid) \
+		    [list \
+			 [expr ($x < ($size - 1)) ? 1 : 0] \
+			 [expr ($x > 0) ? 1 : 0] \
+			 [expr ($y < ($size - 1)) ? 1 : 0] \
+			 [expr ($y > 0) ? 1 :0]]
+	    }
+	}
     }
 
     # Initialize the 3D labyrinthe.
 
     for {set x 0} {$x < $size} {incr x} {
-		for {set y 0} {$y < $size} {incr y} {
-			for {set z 0} {$z < $size} {incr z} {
+	for {set y 0} {$y < $size} {incr y} {
+	    for {set z 0} {$z < $size} {incr z} {
 
-				# DOC Un point du cube est une liste de 6 entier qui permet de
-				# gérer chacune des 6 directions possibles, dans l'ordre
-				# suivant: x, -x, y, -y, z, -z.
+		# DOC Un point du cube est une liste de 6 entier qui permet de
+		# gérer chacune des 6 directions possibles, dans l'ordre
+		# suivant: x, -x, y, -y, z, -z.
 
-				lappend laby_data($laby_name.grid)  \
-					[list \
-						 [expr ($x < ($size - 1)) ? 1 : 0] \
-						 [expr ($x > 0) ? 1 : 0] \
-						 [expr ($y < ($size - 1)) ? 1 : 0] \
-						 [expr ($y > 0) ? 1 : 0] \
-						 [expr ($z < ($size - 1)) ? 1 : 0] \
-						 [expr ($z > 0) ? 1 :0]]
-			}
-		}
+		lappend laby_data($laby_name.grid)  \
+		    [list \
+			 [expr ($x < ($size - 1)) ? 1 : 0] \
+			 [expr ($x > 0) ? 1 : 0] \
+			 [expr ($y < ($size - 1)) ? 1 : 0] \
+			 [expr ($y > 0) ? 1 : 0] \
+			 [expr ($z < ($size - 1)) ? 1 : 0] \
+			 [expr ($z > 0) ? 1 :0]]
+	    }
+	}
     }
 
     return $laby_name
@@ -185,28 +185,28 @@ proc move_2d {laby face direction} {
 
     for {set i 0} {$i < 2} {incr i} {
 
-		# Make the start to end direction value.
+	# Make the start to end direction value.
 
-		# le quartet move_* indique les direction du déplacement soitent x, -x, y, -y
+	# le quartet move_* indique les direction du déplacement soitent x, -x, y, -y
 
-		if {[lindex $direction $i] != 0} {
+	if {[lindex $direction $i] != 0} {
 
-			if {[lindex $direction $i] == 1} {
+	    if {[lindex $direction $i] == 1} {
 
-				lappend move_start_to_end 1 0
-				lappend move_end_to_start 0 1
+		lappend move_start_to_end 1 0
+		lappend move_end_to_start 0 1
 
-			} else {
+	    } else {
 
-				lappend move_start_to_end 0 1
-				lappend move_end_to_start 1 0
-			}
+		lappend move_start_to_end 0 1
+		lappend move_end_to_start 1 0
+	    }
 
-		} else {
+	} else {
 
-			lappend move_start_to_end 0 0
-			lappend move_end_to_start 0 0
-		}
+	    lappend move_start_to_end 0 0
+	    lappend move_end_to_start 0 0
+	}
     }
 
     # Update counter if the next point to move on, if free.
@@ -216,20 +216,20 @@ proc move_2d {laby face direction} {
     # alors on peut compter un point de plus pour le chemin sur cete face
 
     if {([lsearch [get_point_from_direction_2d $laby $face $move_start_to_end] 2] == -1) \
-			&& ([lsearch $move_start_to_end 1] != -1)} {
+	    && ([lsearch $move_start_to_end 1] != -1)} {
 
-		incr laby_data($laby.face.$face.used)
+	incr laby_data($laby.face.$face.used)
 
     }
 
     for {set i 0} {$i < 2} {incr i} {
 
-		# Update the 2d cursor.
+	# Update the 2d cursor.
 
-		lset laby_data($laby.face.$face.cursor.position) $i \
-			[expr \
-				 [lindex $laby_data($laby.face.$face.cursor.position) $i] \
-				 + [lindex $direction $i]]
+	lset laby_data($laby.face.$face.cursor.position) $i \
+	    [expr \
+		 [lindex $laby_data($laby.face.$face.cursor.position) $i] \
+		 + [lindex $direction $i]]
     }
 
     # Update the display.
@@ -237,8 +237,8 @@ proc move_2d {laby face direction} {
     set i [lsearch $move_start_to_end 1]
 
     if {$i != -1} {
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.$face.segment.$x.$y.$i) -fill red -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.$face.segment.$x.$y.$i) -fill red -width 5
     }
 
     set x [lindex $laby_data($laby.face.$face.cursor.position) 0]
@@ -247,8 +247,8 @@ proc move_2d {laby face direction} {
     set i [lsearch $move_end_to_start 1]
 
     if {$i != -1} {
-		$laby_display(canvas) itemconfigure \
-			$laby_display($laby.$face.segment.$x.$y.$i) -fill red -width 5
+	$laby_display(canvas) itemconfigure \
+	    $laby_display($laby.$face.segment.$x.$y.$i) -fill red -width 5
     }
 
     # Get the end point from the grid.
@@ -259,13 +259,13 @@ proc move_2d {laby face direction} {
 
     for {set i 0} {$i < 4} {incr i} {
 
-		if {[lindex $move_start_to_end $i] == 1} {
-			lset laby_data($laby.face.$face.grid) $index_start $i 2
-		}
+	if {[lindex $move_start_to_end $i] == 1} {
+	    lset laby_data($laby.face.$face.grid) $index_start $i 2
+	}
 
-		if {[lindex $move_end_to_start $i] == 1} {
-			lset laby_data($laby.face.$face.grid) $index_end $i 2
-		}
+	if {[lindex $move_end_to_start $i] == 1} {
+	    lset laby_data($laby.face.$face.grid) $index_end $i 2
+	}
     }
 
 }
@@ -288,8 +288,8 @@ proc get_index_from_coord_2d {laby coord} {
     set size $laby_data($laby.size)
 
     return [expr \
-				[lindex $coord 0] * $size \
-				+ [lindex $coord  1]]
+		[lindex $coord 0] * $size \
+		+ [lindex $coord  1]]
 }
 
 # Get the current cursor point from the grid.
@@ -319,9 +319,9 @@ proc get_index_from_coord_3d {laby coord} {
     set size $laby_data($laby.size)
 
     return [expr \
-				[lindex $coord 0] * $size * $size \
-				+ [lindex $coord  1] * $size \
-				+ [lindex $coord 2]]
+		[lindex $coord 0] * $size * $size \
+		+ [lindex $coord  1] * $size \
+		+ [lindex $coord 2]]
 }
 
 # Move the cursor on the given 3D direction.
@@ -339,32 +339,32 @@ proc move_3d {laby direction} {
 
     for {set i 0} {$i < 3} {incr i} {
 
-		# Update the 3D cursor.
+	# Update the 3D cursor.
 
-		lset laby_data($laby.cursor.position) $i \
-			[expr [lindex $laby_data($laby.cursor.position) $i] \
-				 + [lindex $direction $i]]
+	lset laby_data($laby.cursor.position) $i \
+	    [expr [lindex $laby_data($laby.cursor.position) $i] \
+		 + [lindex $direction $i]]
 
-		# Make the start to end value.
+	# Make the start to end value.
 
-		if {[lindex $direction $i] != 0} {
+	if {[lindex $direction $i] != 0} {
 
-			if {[lindex $direction $i] == 1} {
+	    if {[lindex $direction $i] == 1} {
 
-				lappend move_start_to_end 1 0
-				lappend move_end_to_start 0 1
+		lappend move_start_to_end 1 0
+		lappend move_end_to_start 0 1
 
-			} else {
+	    } else {
 
-				lappend move_start_to_end 0 1
-				lappend move_end_to_start 1 0
-			}
+		lappend move_start_to_end 0 1
+		lappend move_end_to_start 1 0
+	    }
 
-		} else {
+	} else {
 
-			lappend move_start_to_end 0 0
-			lappend move_end_to_start 0 0
-		}
+	    lappend move_start_to_end 0 0
+	    lappend move_end_to_start 0 0
+	}
     }
 
     # Get the end point from the grid.
@@ -375,15 +375,15 @@ proc move_3d {laby direction} {
 
     for {set i 0} { $i < 6} {incr i} {
 
-		lset laby_data($laby.grid) $index_start $i \
-			[expr \
-				 [lindex $laby_data($laby.grid) $index_start $i] \
-				 + [lindex $move_start_to_end $i]]
+	lset laby_data($laby.grid) $index_start $i \
+	    [expr \
+		 [lindex $laby_data($laby.grid) $index_start $i] \
+		 + [lindex $move_start_to_end $i]]
 
-		lset laby_data($laby.grid) $index_end $i \
-			[expr \
-				 [lindex $laby_data($laby.grid) $index_end $i] \
-				 + [lindex $move_end_to_start $i]]
+	lset laby_data($laby.grid) $index_end $i \
+	    [expr \
+		 [lindex $laby_data($laby.grid) $index_end $i] \
+		 + [lindex $move_end_to_start $i]]
     }
 
     # Update the 2D faces.
@@ -415,86 +415,86 @@ proc move_back_3d {laby} {
 
     if {[llength $laby_data($laby.histo)] > 1} {
 
-		set status 1
+	set status 1
 
-		# Keep the current position.
+	# Keep the current position.
 
-		set old_position [lindex $laby_data($laby.histo) end]
+	set old_position [lindex $laby_data($laby.histo) end]
 
-		set xs [lindex $old_position 0]
-		set ys [lindex $old_position 1]
-		set zs [lindex $old_position 2]
+	set xs [lindex $old_position 0]
+	set ys [lindex $old_position 1]
+	set zs [lindex $old_position 2]
 
-		# Update the history.
+	# Update the history.
 
-		set laby_data($laby.histo) [lrange $laby_data($laby.histo) 0 end-1]
+	set laby_data($laby.histo) [lrange $laby_data($laby.histo) 0 end-1]
 
-		# Update the 3D cursors.
+	# Update the 3D cursors.
 
-		set laby_data($laby.cursor.position) [lindex $laby_data($laby.histo) end]
+	set laby_data($laby.cursor.position) [lindex $laby_data($laby.histo) end]
 
-		# Update the 2D cursors.
+	# Update the 2D cursors.
 
-		set xe [lindex $laby_data($laby.cursor.position) 0]
-		set ye [lindex $laby_data($laby.cursor.position) 1]
-		set ze [lindex $laby_data($laby.cursor.position) 2]
+	set xe [lindex $laby_data($laby.cursor.position) 0]
+	set ye [lindex $laby_data($laby.cursor.position) 1]
+	set ze [lindex $laby_data($laby.cursor.position) 2]
 
-		set laby_data($laby.face.front.cursor.position) [list $xe $ye]
-		set laby_data($laby.face.side.cursor.position) [list $ze $ye]
-		set laby_data($laby.face.top.cursor.position) [list $xe $ze]
+	set laby_data($laby.face.front.cursor.position) [list $xe $ye]
+	set laby_data($laby.face.side.cursor.position) [list $ze $ye]
+	set laby_data($laby.face.top.cursor.position) [list $xe $ze]
 
-		# x_start x_end y_start y_end i_start_to_end i_end_to_start
+	# x_start x_end y_start y_end i_start_to_end i_end_to_start
 
-		set direction [list [expr $xe > $xs] [expr $xe < $xs] [expr $ye > $ys] [expr $ye < $ys] ]
+	set direction [list [expr $xe > $xs] [expr $xe < $xs] [expr $ye > $ys] [expr $ye < $ys] ]
 
-		set i [lsearch $direction 1]
+	set i [lsearch $direction 1]
 
-		if {$i != -1} {
+	if {$i != -1} {
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.front.segment.$xs.$ys.$i) -fill yellow -width 5
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.front.segment.$xs.$ys.$i) -fill yellow -width 5
 
-			set direction [list [expr $xe < $xs] [expr $xe > $xs] [expr $ye < $ys] [expr $ye > $ys]]
+	    set direction [list [expr $xe < $xs] [expr $xe > $xs] [expr $ye < $ys] [expr $ye > $ys]]
 
-			set i [lsearch $direction 1]
+	    set i [lsearch $direction 1]
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.front.segment.$xe.$ye.$i) -fill yellow -width 5
-		}
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.front.segment.$xe.$ye.$i) -fill yellow -width 5
+	}
 
-		set direction [list [expr $ze > $zs] [expr $ze < $zs] [expr $ye > $ys] [expr $ye < $ys] ]
+	set direction [list [expr $ze > $zs] [expr $ze < $zs] [expr $ye > $ys] [expr $ye < $ys] ]
 
-		set i [lsearch $direction 1]
+	set i [lsearch $direction 1]
 
-		if {$i != -1} {
+	if {$i != -1} {
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.side.segment.$zs.$ys.$i) -fill yellow -width 5
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.side.segment.$zs.$ys.$i) -fill yellow -width 5
 
-			set direction [list [expr $ze < $zs] [expr $ze > $zs] [expr $ye < $ys] [expr $ye > $ys]]
+	    set direction [list [expr $ze < $zs] [expr $ze > $zs] [expr $ye < $ys] [expr $ye > $ys]]
 
-			set i [lsearch $direction 1]
+	    set i [lsearch $direction 1]
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.side.segment.$ze.$ye.$i) -fill yellow -width 5
-		}
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.side.segment.$ze.$ye.$i) -fill yellow -width 5
+	}
 
-		set direction [list [expr $xe > $xs] [expr $xe < $xs] [expr $ze > $zs] [expr $ze < $zs] ]
+	set direction [list [expr $xe > $xs] [expr $xe < $xs] [expr $ze > $zs] [expr $ze < $zs] ]
 
-		set i [lsearch $direction 1]
+	set i [lsearch $direction 1]
 
-		if {$i != -1} {
+	if {$i != -1} {
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.top.segment.$xs.$zs.$i) -fill yellow -width 5
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.top.segment.$xs.$zs.$i) -fill yellow -width 5
 
-			set direction [list [expr $xe < $xs] [expr $xe > $xs] [expr $ze < $zs] [expr $ze > $zs] ]
+	    set direction [list [expr $xe < $xs] [expr $xe > $xs] [expr $ze < $zs] [expr $ze > $zs] ]
 
-			set i [lsearch $direction 1]
+	    set i [lsearch $direction 1]
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.top.segment.$xe.$ze.$i) -fill yellow -width 5
-		}
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.top.segment.$xe.$ze.$i) -fill yellow -width 5
+	}
     }
 
     return $status
@@ -529,141 +529,141 @@ proc display {laby {type flat}} {
 
     if {$type == "hexa"} {
 
-		set laby_display(translation_h.front) [list \
-												   [expr $middle - ($size - 1)  * $laby_display(grid_unit) * $cos_PI_6] \
-												   [expr $middle + ($size - 1) * $laby_display(grid_unit) *  $sin_PI_6]]
+	set laby_display(translation_h.front) [list \
+						   [expr $middle - ($size - 1)  * $laby_display(grid_unit) * $cos_PI_6] \
+						   [expr $middle + ($size - 1) * $laby_display(grid_unit) *  $sin_PI_6]]
 
-		set laby_display(translation_h.top) [list \
-												 $middle \
-												 [expr $middle - ($size - 1) * 2 * $laby_display(grid_unit) *  $sin_PI_6]]
+	set laby_display(translation_h.top) [list \
+						 $middle \
+						 [expr $middle - ($size - 1) * 2 * $laby_display(grid_unit) *  $sin_PI_6]]
 
-		set laby_display(translation_h.side) [list \
-												  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $cos_PI_6] \
-												  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $sin_PI_6]]
+	set laby_display(translation_h.side) [list \
+						  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $cos_PI_6] \
+						  [expr $middle + ($size - 1) * $laby_display(grid_unit) * $sin_PI_6]]
 
     } else {
 
         set laby_display(translation_h.front) [list \
-												   [expr $middle  - $size * $laby_display(grid_unit)] \
-												   [expr $middle  + $size * $laby_display(grid_unit)]]
+						   [expr $middle  - $size * $laby_display(grid_unit)] \
+						   [expr $middle  + $size * $laby_display(grid_unit)]]
 
-		set laby_display(translation_h.top) [list \
-												 [expr $middle  - $size * $laby_display(grid_unit)] \
-												 [expr $middle  - $size * $laby_display(grid_unit)]]
+	set laby_display(translation_h.top) [list \
+						 [expr $middle  - $size * $laby_display(grid_unit)] \
+						 [expr $middle  - $size * $laby_display(grid_unit)]]
 
         set laby_display(translation_h.side) [list \
-												  [expr $middle  + $size * $laby_display(grid_unit)] \
-												  [expr $middle  + $size * $laby_display(grid_unit)]]
+						  [expr $middle  + $size * $laby_display(grid_unit)] \
+						  [expr $middle  + $size * $laby_display(grid_unit)]]
     }
 
     foreach face $laby_data(face) {
 
-		# Translation of the face origine in the display coordinates.
+	# Translation of the face origine in the display coordinates.
 
-		set orig $laby_display(translation_h.$face)
+	set orig $laby_display(translation_h.$face)
 
-		set x_orig  [lindex $orig 0]
-		set y_orig  [lindex $orig 1]
+	set x_orig  [lindex $orig 0]
+	set y_orig  [lindex $orig 1]
 
-		# Computes the direction and size of base vectors in the display
-		# coordinates.
+	# Computes the direction and size of base vectors in the display
+	# coordinates.
 
-		if {$type == "hexa"} {
+	if {$type == "hexa"} {
 
-			set dir_x [list \
-						   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
-						   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
+	    set dir_x [list \
+			   [expr [lindex $laby_display(xy_h.$face) 0 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy_h.$face) 0 1] * $laby_display(grid_unit)]]
 
-			set dir_y [list \
-						   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
-						   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
-		} else {
+	    set dir_y [list \
+			   [expr [lindex $laby_display(xy_h.$face) 1 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy_h.$face) 1 1] * $laby_display(grid_unit)]]
+	} else {
 
-			set dir_x [list \
-						   [expr [lindex $laby_display(xy.$face) 0 0] * $laby_display(grid_unit)] \
-						   [expr [lindex $laby_display(xy.$face) 0 1] * $laby_display(grid_unit)]]
+	    set dir_x [list \
+			   [expr [lindex $laby_display(xy.$face) 0 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy.$face) 0 1] * $laby_display(grid_unit)]]
 
-			set dir_y [list \
-						   [expr [lindex $laby_display(xy.$face) 1 0] * $laby_display(grid_unit)] \
-						   [expr [lindex $laby_display(xy.$face) 1 1] * $laby_display(grid_unit)]]
-		}
+	    set dir_y [list \
+			   [expr [lindex $laby_display(xy.$face) 1 0] * $laby_display(grid_unit)] \
+			   [expr [lindex $laby_display(xy.$face) 1 1] * $laby_display(grid_unit)]]
+	}
 
-		# Get the face list of point.
+	# Get the face list of point.
 
-		set grid $laby_data($laby.face.$face.grid)
+	set grid $laby_data($laby.face.$face.grid)
 
-		for {set x 0} {$x < $size} {incr x} {
+	for {set x 0} {$x < $size} {incr x} {
 
-			for {set y 0} {$y < $size} {incr y} {
+	    for {set y 0} {$y < $size} {incr y} {
 
-				# Compute the point coordinates by using the xy direction
-				# vector.
+		# Compute the point coordinates by using the xy direction
+		# vector.
 
-				set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
-				set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
+		set ox [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
+		set oy [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
 
-				# Draw the segments between 2 points in the grid.
+		# Draw the segments between 2 points in the grid.
 
-				set index [expr ($x * $size) + $y]
+		set index [expr ($x * $size) + $y]
 
-				for {set i 0} {$i < 4} {incr i} {
+		for {set i 0} {$i < 4} {incr i} {
 
-					set seg_type [lindex $grid $index $i]
+		    set seg_type [lindex $grid $index $i]
 
-					if {$seg_type == 1 || $seg_type == 2} {
+		    if {$seg_type == 1 || $seg_type == 2} {
 
-						set dx [expr \
-									$ox \
-									+ [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_x 0] \
-									+ [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_x 1]]
-						set dy [expr \
-									$oy \
-									+ [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_y 0] \
-									+ [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_y 1]]
+			set dx [expr \
+				    $ox \
+				    + [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_x 0] \
+				    + [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_x 1]]
+			set dy [expr \
+				    $oy \
+				    + [lindex $laby_data(direction_2d.$i) 0] * [lindex $dir_y 0] \
+				    + [lindex $laby_data(direction_2d.$i) 1] * [lindex $dir_y 1]]
 
-						# DOC On enregistre les segments de la grid en fonction des
-						# paramètres x, y et index de direction (de 1 à 4).
+			# DOC On enregistre les segments de la grid en fonction des
+			# paramètres x, y et index de direction (de 1 à 4).
 
-						set laby_display($laby.$face.segment.$x.$y.$i) \
-							[$laby_display(canvas) create line $ox $oy $dx $dy -fill gray20 -tags "background"]
+			set laby_display($laby.$face.segment.$x.$y.$i) \
+			    [$laby_display(canvas) create line $ox $oy $dx $dy -fill gray20 -tags "background"]
 
-						if {$seg_type == 2} {
+			if {$seg_type == 2} {
 
-							set laby_display($laby.$face.segment.$x.$y.$i) \
-								[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) \
-									 -width $laby_display(line_width) -tags $face]
-						}
-					}
-				}
-
-				# Draw the point.
-
-				if {$x == 0 && $y == 0} {
-					set rayon 7
-					set oval_color green
-					set oval_tag "$face point goal"
-				} else  {
-					set rayon 7
-					set oval_color gray60
-					set oval_tag "point $face"
-				}
-
-				set laby_display($laby.$face.point.$x.$y) \
-					[$laby_display(canvas) create oval \
-						 [expr $ox - $rayon] [expr $oy - $rayon] \
-						 [expr $ox + $rayon] [expr $oy + $rayon] \
-						 -fill $oval_color -tags $oval_tag]
-
-				# Create the play cursor.
-				set rayon_cursor 9
-				if {$x == [expr $size - 1] && $y == $x} {
-					$laby_display(canvas) create oval \
-						[expr $ox - $rayon_cursor] [expr $oy - $rayon_cursor] \
-						[expr $ox + $rayon_cursor] [expr $oy + $rayon_cursor] \
-						-outline red -width 3 -tags "front side top goal"
-				}
+			    set laby_display($laby.$face.segment.$x.$y.$i) \
+				[$laby_display(canvas) create line $ox $oy $dx $dy -fill $laby_display(color.$face) \
+				     -width $laby_display(line_width) -tags $face]
 			}
+		    }
 		}
+
+		# Draw the point.
+
+		if {$x == 0 && $y == 0} {
+		    set rayon 7
+		    set oval_color green
+		    set oval_tag "$face point goal"
+		} else  {
+		    set rayon 7
+		    set oval_color gray60
+		    set oval_tag "point $face"
+		}
+
+		set laby_display($laby.$face.point.$x.$y) \
+		    [$laby_display(canvas) create oval \
+			 [expr $ox - $rayon] [expr $oy - $rayon] \
+			 [expr $ox + $rayon] [expr $oy + $rayon] \
+			 -fill $oval_color -tags $oval_tag]
+
+		# Create the play cursor.
+		set rayon_cursor 9
+		if {$x == [expr $size - 1] && $y == $x} {
+		    $laby_display(canvas) create oval \
+			[expr $ox - $rayon_cursor] [expr $oy - $rayon_cursor] \
+			[expr $ox + $rayon_cursor] [expr $oy + $rayon_cursor] \
+			-outline red -width 3 -tags "front side top goal"
+		}
+	    }
+	}
     }
 
     # Set point over the lines.
@@ -682,27 +682,27 @@ proc cursor_display {laby action} {
 
     foreach face {front side top} {
 
-		# Get the coords.
+	# Get the coords.
 
-		set x [lindex $laby_data($laby.face.$face.cursor.position) 0]
-		set y [lindex $laby_data($laby.face.$face.cursor.position) 1]
+	set x [lindex $laby_data($laby.face.$face.cursor.position) 0]
+	set y [lindex $laby_data($laby.face.$face.cursor.position) 1]
 
-		# Update the oval depending on requested action.
+	# Update the oval depending on requested action.
 
-		if {$action == "on"} {
+	if {$action == "on"} {
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.$face.point.$x.$y) -fill red
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.$face.point.$x.$y) -fill red
 
-		} else {
+	} else {
 
-			if {$action != "off"} {
-				puts "Internal error: bad parameter"
-			}
+	    if {$action != "off"} {
+		puts "Internal error: bad parameter"
+	    }
 
-			$laby_display(canvas) itemconfigure \
-				$laby_display($laby.$face.point.$x.$y) -fill yellow
-		}
+	    $laby_display(canvas) itemconfigure \
+		$laby_display($laby.$face.point.$x.$y) -fill yellow
+	}
     }
 }
 
@@ -714,10 +714,10 @@ proc get_point_from_direction_3d {laby direction} {
 
     for {set i 0} {$i < 3} {incr i} {
 
-		lappend cursor [expr \
-							[lindex $laby_data($laby.cursor.position) $i] \
-							+ [lindex $direction [expr 2 * $i]] \
-							- [lindex $direction [expr 2 * $i + 1]]]
+	lappend cursor [expr \
+			    [lindex $laby_data($laby.cursor.position) $i] \
+			    + [lindex $direction [expr 2 * $i]] \
+			    - [lindex $direction [expr 2 * $i + 1]]]
     }
 
     return [lindex $laby_data($laby.grid) [get_index_from_coord_3d $laby $cursor]]
@@ -731,10 +731,10 @@ proc get_point_from_direction_2d {laby face direction} {
 
     for {set i 0} {$i < 2} {incr i} {
 
-		lappend cursor [expr \
-							[lindex $laby_data($laby.face.$face.cursor.position) $i] \
-							+ [lindex $direction [expr 2 * $i]] \
-							- [lindex $direction [expr 2 * $i + 1]]]
+	lappend cursor [expr \
+			    [lindex $laby_data($laby.face.$face.cursor.position) $i] \
+			    + [lindex $direction [expr 2 * $i]] \
+			    - [lindex $direction [expr 2 * $i + 1]]]
     }
 
     return [lindex $laby_data($laby.face.$face.grid) [get_index_from_coord_2d $laby $cursor]]
@@ -753,25 +753,25 @@ proc direction_3d_ok {laby index} {
 
     if {[lindex [get_point_from_cursor_3d $laby] $index] == 1} {
 
-		set status 1
+	set status 1
 
-		# The way is on the grid and free (0 means no way, 2 means the way is
-		# done).
+	# The way is on the grid and free (0 means no way, 2 means the way is
+	# done).
 
-		lset direction $index 1
+	lset direction $index 1
 
-		# Calcul des coordonnées 3D du point à tester, puis recherche du
-		# sextuplé dans le grid pour vérifier la présence d'un 2 dans la liste
-		# (ie. le point est déjà utilisé par un chemin).
+	# Calcul des coordonnées 3D du point à tester, puis recherche du
+	# sextuplé dans le grid pour vérifier la présence d'un 2 dans la liste
+	# (ie. le point est déjà utilisé par un chemin).
 
-		set point [get_point_from_direction_3d $laby $direction]
+	set point [get_point_from_direction_3d $laby $direction]
 
-		if {[lsearch $point 2] != -1} {
+	if {[lsearch $point 2] != -1} {
 
-			# This point is used.
+	    # This point is used.
 
-			set status 0
-		}
+	    set status 0
+	}
     }
 
     return $status
@@ -792,7 +792,7 @@ proc is_free_2d {laby face direction} {
 
     if {[lindex $point [lsearch $direction 1]] == 1} {
 
-		set status 1
+	set status 1
     }
 
     return $status
@@ -810,9 +810,9 @@ proc is_used_2d {laby face direction} {
 
     if {[lsearch $point 2] == -1} {
 
-		# This point is not used.
+	# This point is not used.
 
-		set status 0
+	set status 0
     }
 
     return $status
@@ -840,99 +840,99 @@ proc random_free_3d_direction {laby direction} {
 
     for {set i 0} {$i < 6} {incr i} {
 
-		# Add available direction to the list.
+	# Add available direction to the list.
 
-		if {[direction_3d_ok $laby $i] == 1} {
+	if {[direction_3d_ok $laby $i] == 1} {
 
-			set sextuple {0 0 0 0 0 0}
-			lappend direction_list [lset sextuple $i 1]
-		}
+	    set sextuple {0 0 0 0 0 0}
+	    lappend direction_list [lset sextuple $i 1]
+	}
     }
 
     if {[llength $direction_list] > 0} {
 
-		# DOC transformation d'un vecteur 3D dans ses projections sur les faces
-		# en 2D: x => front x, top x, y => front y, side y, z => side x, top y.
+	# DOC transformation d'un vecteur 3D dans ses projections sur les faces
+	# en 2D: x => front x, top x, y => front y, side y, z => side x, top y.
 
-		set good_direction [list]
+	set good_direction [list]
 
-		foreach dir $direction_list {
+	foreach dir $direction_list {
 
-			# List the corresponding 2D directions.
+	    # List the corresponding 2D directions.
 
-			set direction_2d(front) \
-				[list \
-					 [lindex $dir 0] [lindex $dir 1] \
-					 [lindex $dir 2] [lindex $dir 3]]
+	    set direction_2d(front) \
+		[list \
+		     [lindex $dir 0] [lindex $dir 1] \
+		     [lindex $dir 2] [lindex $dir 3]]
 
-			set direction_2d(side) \
-				[list \
-					 [lindex $dir 4] [lindex $dir 5] \
-					 [lindex $dir 2] [lindex $dir 3]]
+	    set direction_2d(side) \
+		[list \
+		     [lindex $dir 4] [lindex $dir 5] \
+		     [lindex $dir 2] [lindex $dir 3]]
 
-			set direction_2d(top) \
-				[list \
-					 [lindex $dir 0] [lindex $dir 1] \
-					 [lindex $dir 4] [lindex $dir 5]]
+	    set direction_2d(top) \
+		[list \
+		     [lindex $dir 0] [lindex $dir 1] \
+		     [lindex $dir 4] [lindex $dir 5]]
 
-			# Validate the direction against 2D grids.
+	    # Validate the direction against 2D grids.
 
-			# DOC On sait déjà, suite au test en 3D, que les chemins
-			# sont "sur la grille" (ie. pas besoin de tester le
-			# dépassement des bordures sur la projection en 2D) et
-			# "non tracé". On vérifie que sur la grille 2D le chemin
-			# et le point d'arrivée sont libres, ou le chemin est
-			# tracé. Dans le cas d'un déplacement nul sur la face, le
-			# test doit être passant, donc un des 2 tests doit être
-			# vrai. Dans le cas d'un déplacement nul, le premier test
-			# sera faux et le deuxième vrai.
+	    # DOC On sait déjà, suite au test en 3D, que les chemins
+	    # sont "sur la grille" (ie. pas besoin de tester le
+	    # dépassement des bordures sur la projection en 2D) et
+	    # "non tracé". On vérifie que sur la grille 2D le chemin
+	    # et le point d'arrivée sont libres, ou le chemin est
+	    # tracé. Dans le cas d'un déplacement nul sur la face, le
+	    # test doit être passant, donc un des 2 tests doit être
+	    # vrai. Dans le cas d'un déplacement nul, le premier test
+	    # sera faux et le deuxième vrai.
 
-			set check 1
+	    set check 1
 
-			foreach face $laby_data(face) {
+	    foreach face $laby_data(face) {
 
-				set free [is_free_2d $laby $face $direction_2d($face)]
-				set used [is_used_2d $laby $face $direction_2d($face)]
+		set free [is_free_2d $laby $face $direction_2d($face)]
+		set used [is_used_2d $laby $face $direction_2d($face)]
 
-				if {!(($free && !$used) || !$free)} {
+		if {!(($free && !$used) || !$free)} {
 
-					set check 0
-					break
-				}
-			}
-
-			if {$check == 1} {
-
-				lappend good_direction $dir
-			}
+		    set check 0
+		    break
 		}
+	    }
+
+	    if {$check == 1} {
+
+		lappend good_direction $dir
+	    }
+	}
 
 
-		if {[llength  $good_direction] > 0} {
+	if {[llength  $good_direction] > 0} {
 
-			# Get random direction.
+	    # Get random direction.
 
-			set rand_choice [lindex $good_direction [expr int(rand() * [llength $good_direction])]]
+	    set rand_choice [lindex $good_direction [expr int(rand() * [llength $good_direction])]]
 
-			for {set i 0} {$i < 3} {incr i} {
+	    for {set i 0} {$i < 3} {incr i} {
 
-				lappend random_direction [expr \
-											  [lindex $rand_choice [expr 2 * $i]] \
-											  - [lindex $rand_choice [expr 2 * $i + 1]]]
-			}
+		lappend random_direction [expr \
+					      [lindex $rand_choice [expr 2 * $i]] \
+					      - [lindex $rand_choice [expr 2 * $i + 1]]]
+	    }
 
-		} else {
+	} else {
 
-			# No free direction available against 2D faces.
+	    # No free direction available against 2D faces.
 
-			set status 0
-		}
+	    set status 0
+	}
 
     } else {
 
-		# No free direction available.
+	# No free direction available.
 
-		set status 0
+	set status 0
     }
 
     return $status
@@ -960,42 +960,42 @@ proc generate {size} {
 
     while {1} {
 
-		set direction [list]
+	set direction [list]
 
-		if {[random_free_3d_direction $laby1 direction] == 1} {
+	if {[random_free_3d_direction $laby1 direction] == 1} {
 
-			# Move the cursor.
+	    # Move the cursor.
 
-			move_3d $laby1 $direction
+	    move_3d $laby1 $direction
 
-		} else {
+	} else {
 
-			# Go back one step.
+	    # Go back one step.
 
-			if {[move_back_3d $laby1] == 0} {
+	    if {[move_back_3d $laby1] == 0} {
 
-				# Cannot terminate the labyrinthe.
+		# Cannot terminate the labyrinthe.
 
-				break
-			}
-		}
+		break
+	    }
+	}
 
-		# Check if path reach the goal (if not already matched).
+	# Check if path reach the goal (if not already matched).
 
-		if {$goal == 0} {
+	if {$goal == 0} {
 
-			if {[lindex $laby_data($laby1.cursor.position) 0] == ($laby_data($laby1.size) - 1) \
-					&& [lindex $laby_data($laby1.cursor.position) 1] == ($laby_data($laby1.size) - 1) \
-					&& [lindex $laby_data($laby1.cursor.position) 2] == ($laby_data($laby1.size) - 1)} {
+	    if {[lindex $laby_data($laby1.cursor.position) 0] == ($laby_data($laby1.size) - 1) \
+		    && [lindex $laby_data($laby1.cursor.position) 1] == ($laby_data($laby1.size) - 1) \
+		    && [lindex $laby_data($laby1.cursor.position) 2] == ($laby_data($laby1.size) - 1)} {
 
-				# on mémorize la distance parcourue à partir de la taille de l'historique
-				set goal [expr [llength $laby_data($laby1.histo)] - 1]
-			}
-		}
+		# on mémorize la distance parcourue à partir de la taille de l'historique
+		set goal [expr [llength $laby_data($laby1.histo)] - 1]
+	    }
+	}
 
-		cursor_display $laby1 on
-		update
-		cursor_display $laby1 off
+	cursor_display $laby1 on
+	update
+	cursor_display $laby1 off
     }
 
     # Display some statistics.
@@ -1019,16 +1019,16 @@ proc generate {size} {
 
     set nb_point [expr $size * $size]
     if {($laby_data($laby1.face.front.used) == $nb_point) \
-			&& ($laby_data($laby1.face.side.used) == $nb_point) \
-			&& ($laby_data($laby1.face.top.used) == $nb_point)} {
+	    && ($laby_data($laby1.face.side.used) == $nb_point) \
+	    && ($laby_data($laby1.face.top.used) == $nb_point)} {
 
-		# Save the labyrinthe in file.
+	# Save the labyrinthe in file.
 
-		set file_name [format %02d_%03d $size $goal]
-		set out [open $file_name w]
-		puts $out [array get laby_data $laby1.*]
-		puts $out "index $laby_data(number)"
-		close $out
+	set file_name [format %02d_%03d $size $goal]
+	set out [open $file_name w]
+	puts $out [array get laby_data $laby1.*]
+	puts $out "index $laby_data(number)"
+	close $out
     }
 
     laby_delete $laby1
@@ -1087,35 +1087,35 @@ while {[llength $argv] > 0 } {
 
     switch -- $option {
 
-		"-gen" {
-			set size  [lindex $argv 1]
-			if {![string is integer -strict $size]} {
-				usage
-				exit 1
-			}
-			if {$size < 2} {
-				puts "Minimum size is 2 !"
-				exit 1
-			}
-			set argv [lrange $argv 2 end]
-			set gen_option 1
-		}
+	"-gen" {
+	    set size  [lindex $argv 1]
+	    if {![string is integer -strict $size]} {
+		usage
+		exit 1
+	    }
+	    if {$size < 2} {
+		puts "Minimum size is 2 !"
+		exit 1
+	    }
+	    set argv [lrange $argv 2 end]
+	    set gen_option 1
+	}
 
-		"-file" {
-			set file_name [lindex $argv 1]
-			if {! [file exists $file_name]} {
-				puts "file $file_name not found"
-				exit 1
-			}
-			set argv [lrange $argv 2 end]
-			set file_option 1
-		}
+	"-file" {
+	    set file_name [lindex $argv 1]
+	    if {! [file exists $file_name]} {
+		puts "file $file_name not found"
+		exit 1
+	    }
+	    set argv [lrange $argv 2 end]
+	    set file_option 1
+	}
 
-		default {
-			puts "unknown option $option"
-			usage
-			exit 0
-		}
+	default {
+	    puts "unknown option $option"
+	    usage
+	    exit 0
+	}
     }
 }
 
@@ -1142,7 +1142,7 @@ update
 if { $gen_option == 1 } {
 
     while {1} {
-		generate $size
+	generate $size
     }
 
 }
@@ -1185,27 +1185,28 @@ if { $file_option == 1} {
 
     demi_goals_and_cursor laby$laby_data(index)
 
-    foreach path $demi_path_list(side) {
-		$laby_display(canvas_2) create polygon $path -fill {} -outline black -tags side
+    foreach {path color} $demi_path_list(side) {
+	puts $path
+	$laby_display(canvas_2) create polygon $path -fill $color -tags side
     }
-    foreach path $demi_path_list(front) {
-		$laby_display(canvas_2) create polygon $path -fill {} -outline black -tags front
+    foreach {path color} $demi_path_list(front) {
+	$laby_display(canvas_2) create polygon $path -fill $color -tags front
     }
-    foreach path $demi_path_list(top) {
-		$laby_display(canvas_2) create polygon $path -fill {} -outline black -tags top
+    foreach {path color} $demi_path_list(top) {
+	$laby_display(canvas_2) create polygon $path -fill $color -tags top
     }
     set rayon 7
     foreach goal $goals {
-		$laby_display(canvas_2) create oval \
-			[expr [lindex $goal 0] - $rayon] [expr [lindex $goal 1] - $rayon] \
-			[expr [lindex $goal 0] + $rayon] [expr [lindex $goal 1] + $rayon] \
-			-fill green -tags [lindex $goal 2]
+	$laby_display(canvas_2) create oval \
+	    [expr [lindex $goal 0] - $rayon] [expr [lindex $goal 1] - $rayon] \
+	    [expr [lindex $goal 0] + $rayon] [expr [lindex $goal 1] + $rayon] \
+	    -fill green -tags [lindex $goal 2]
     }
     set rayon 9
     $laby_display(canvas_2) create oval \
-		[expr [lindex $cursor 0] - $rayon] [expr [lindex $cursor 1] - $rayon] \
-		[expr [lindex $cursor 0] + $rayon] [expr [lindex $cursor 1] + $rayon] \
-		-outline red -width 3 -tags [lindex $cursor 2]
+	[expr [lindex $cursor 0] - $rayon] [expr [lindex $cursor 1] - $rayon] \
+	[expr [lindex $cursor 0] + $rayon] [expr [lindex $cursor 1] + $rayon] \
+	-outline red -width 3 -tags [lindex $cursor 2]
 
     update
 

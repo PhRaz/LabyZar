@@ -13,7 +13,7 @@ proc demi_check_path {laby face x y direction} {
     set index [expr $x * $size + $y]
     set point [lindex $laby_data($laby.face.$face.grid) $index]
     if {[lindex $point $direction] == 2} {
-		return 1
+	return 1
     }
     return 0
 }
@@ -32,68 +32,65 @@ proc demi {laby face} {
     set demi_path_list($face) [list]
 
     for {set x 0} {$x < $size} {incr x} {
-		for {set y 0} {$y < $size} {incr y} {
-
-			# path on x direction
-
-			if {[demi_check_path $laby $face $x $y 0]} {
-				# chaques polygones de la liste est une liste de 4 points
-				switch $face {
-					front {
-						# on a 2 cas pour dessiner les demis chemins des différentes
-						# faces : front d'un côté et les 2 autres (side et top) de
-						# l'autre (faut avoir vu le dessin !)
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x - $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 0.5] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
-					}
-					side {
-						lappend demi_path_list($face) [list \
-														   [expr $x + 0.5] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 + $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
-					}
-					top {
-						lappend demi_path_list($face) [list \
-														   [expr $x + 0.5] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 + $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
-					}
-				}
-			}
-
-			# path on y direction
-
-			if {[demi_check_path $laby $face $x $y 2]} {
-				switch $face {
-					front {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 1 + $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 1 + $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5]]
-					} 
-					side {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
-					}
-					top {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
-					}
-				}
-			}
+	for {set y 0} {$y < $size} {incr y} {
+	    if {[demi_check_path $laby $face $x $y 0]} {
+		# chaques polygones de la liste est une liste de 4 points
+	        switch $face {
+		    front {
+			lappend demi_path_list($face) [list \
+							   [expr $x] [expr $y - $WALL_WIDTH] \
+							   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+			lappend demi_path_list($face) red
+		    }
+		    side {
+			lappend demi_path_list($face) [list \
+							   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 1] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 1 - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
+							   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+			lappend demi_path_list($face) green
+		    }
+		    top {
+			lappend demi_path_list($face) [list \
+							   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 1] [expr $y + $WALL_WIDTH] \
+							   [expr $x + 1 - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
+							   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+			lappend demi_path_list($face) red
+		    }
 		}
+	    }
+	    if {[demi_check_path $laby $face $x $y 2]} {
+		switch $face {
+		    front {
+			lappend demi_path_list($face) [list \
+							   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
+							   [expr $x - $WALL_WIDTH] [expr $y + 1 - $WALL_WIDTH] \
+							   [expr $x + $WALL_WIDTH] [expr $y + 1] \
+							   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH]]
+			lappend demi_path_list($face) blue
+		    }
+		    side {
+			lappend demi_path_list($face) [list \
+							   [expr $x - $WALL_WIDTH] [expr $y] \
+							   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
+							   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH] \
+							   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]]
+			lappend demi_path_list($face) blue
+		    }
+		    top {
+			lappend demi_path_list($face) [list \
+							   [expr $x - $WALL_WIDTH] [expr $y] \
+							   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
+							   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH] \
+							   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]]
+			lappend demi_path_list($face) green
+		    }
+		}
+	    }
+	}
     }
 }
 
@@ -119,25 +116,25 @@ proc demi_points_to_view {laby face} {
     # Compute the translation.
 
     switch $face {
-		front {
-			set translation [list \
-								 [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
-								 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
-		}
-		top {
-			set translation [list \
-								 $middle \
-								 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
-		}
-		side {
-			set translation [list \
-								 [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
-								 [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
-		}
-		default {
-			puts "Fatal error face $face is unknow"
-			exit 1
-		}
+	front {
+	    set translation [list \
+				 [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
+				 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
+	}
+	top {
+	    set translation [list \
+				 $middle \
+				 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
+	}
+	side {
+	    set translation [list \
+				 [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
+				 [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
+	}
+	default {
+	    puts "Fatal error face $face is unknow"
+	    exit 1
+	}
     }
 
     # Translation of the face origin in the display coordinates.
@@ -149,34 +146,33 @@ proc demi_points_to_view {laby face} {
     # coordinates.
 
     set dir_x [list \
-				   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
-				   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
+		   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
 
     set dir_y [list \
-				   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
-				   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
+		   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
+		   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
 
     # Computes the new coordinates.
 
     set new_demi_path_list [list]
 
-    foreach polygon $demi_path_list($face) {
+    foreach {polygon color} $demi_path_list($face) {
 
-		set new_polygon [list]
+	set new_polygon [list]
 
-		foreach {x y} $polygon {
+	foreach {x y} $polygon {
 
-			# Compute the point coordinates by using the xy direction
-			# vector.
+	    # Compute the point coordinates by using the xy direction
+	    # vector.
 
-			set new_x [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
-			set new_y [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
+	    set new_x [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
+	    set new_y [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
 
-			lappend new_polygon $new_x $new_y
-		}
-		lappend new_demi_path_list $new_polygon
+	    lappend new_polygon $new_x $new_y
+	}
+	lappend new_demi_path_list $new_polygon $color
     }
-
     set demi_path_list($face) $new_demi_path_list
 }
 
@@ -203,52 +199,52 @@ proc demi_goals_and_cursor {laby} {
 
     foreach face [list front side top] {
 
-		# Compute the translation.
+	# Compute the translation.
 
-		switch $face {
-			front {
-				set translation [list \
-									 [expr $middle - ($size - 1) * $grid_unit * $cos_PI_6] \
-									 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
-			}
-			top {
-				set translation [list \
-									 $middle \
-									 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
-			}
-			side {
-				set translation [list \
-									 [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
-									 [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
-			}
-			default {
-				puts "Fatal error face $face is unknow"
-				exit 1
-			}
-		}
+	switch $face {
+	    front {
+		set translation [list \
+				     [expr $middle - ($size - 1) * $grid_unit * $cos_PI_6] \
+				     [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
+	    }
+	    top {
+		set translation [list \
+				     $middle \
+				     [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
+	    }
+	    side {
+		set translation [list \
+				     [expr $middle + ($size - 1) * $grid_unit * $cos_PI_6] \
+				     [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
+	    }
+	    default {
+		puts "Fatal error face $face is unknow"
+		exit 1
+	    }
+	}
 
-		# Translation of the face origin in the display coordinates.
+	# Translation of the face origin in the display coordinates.
 
-		set x_orig  [lindex $translation 0]
-		set y_orig  [lindex $translation 1]
+	set x_orig  [lindex $translation 0]
+	set y_orig  [lindex $translation 1]
 
-		# Computes the direction and size of base vectors in the display
-		# coordinates.
+	# Computes the direction and size of base vectors in the display
+	# coordinates.
 
-		set dir_x [list \
-					   [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
-					   [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
+	set dir_x [list \
+		       [expr [lindex $laby_display(xy_h.$face) 0 0] * $grid_unit] \
+		       [expr [lindex $laby_display(xy_h.$face) 0 1] * $grid_unit]]
 
-		set dir_y [list \
-					   [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
-					   [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
+	set dir_y [list \
+		       [expr [lindex $laby_display(xy_h.$face) 1 0] * $grid_unit] \
+		       [expr [lindex $laby_display(xy_h.$face) 1 1] * $grid_unit]]
 
-		# Computes the coordinates of the goal in the face.
+	# Computes the coordinates of the goal in the face.
 
-		set x [expr $x_orig + 0 * [lindex $dir_x 0] + 0 * [lindex $dir_x 1]]
-		set y [expr $y_orig + 0 * [lindex $dir_y 0] + 0 * [lindex $dir_y 1]]
+	set x [expr $x_orig + 0 * [lindex $dir_x 0] + 0 * [lindex $dir_x 1]]
+	set y [expr $y_orig + 0 * [lindex $dir_y 0] + 0 * [lindex $dir_y 1]]
 
-		lappend goals [list $x $y [list $face]]
+	lappend goals [list $x $y [list $face]]
     }
 
     # the player cursor at the same coordinates regardless of the face
