@@ -33,9 +33,16 @@ Les 6 mouvements possibles sont les suivants :
 
 _next_
 
-- ajouter le curseur dans la vue en découpe
-- tester une présentation graphique avec des 1/2 chemins pour rendre visible et anticiper plus facilement les 
-  possibilités de mouvements
-- faire un mode de commande à 1 doigt, le curseur tourne automatiquement sur les chemins possible, de plus 
-  en plus rapidement (donc si on attend trop longtemp le déplacement est choisi aléatoirement)
-  
+- réorganiser le code pour avoir une vue unique
+- calculer la géométrie des chemins dans le repère de la vue, faire 2 carrés,
+  quand ils coïncident on a un rectangle qui fait un chemin
+- gérer les recouvrements pour avoir une même couleur dans un même plan
+- faire un mode de commande
+  - à 1 doigt, le curseur tourne automatiquement sur les chemins possible, de
+    plus en plus rapidement (donc si on attend trop longtemp le déplacement est
+    choisi aléatoirement)
+  - par mouvement de la souris (ou d'un doigt sur une interface tactile)
+- finition
+  - enchaîner les tableaux en fonction de leur difficulté
+  - faire une animation de fin de tableau
+  - trouver un thème graphique
