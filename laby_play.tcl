@@ -47,6 +47,7 @@ proc play_display_path {laby cursor} {
     global laby_data
     global laby_display
 
+	return
 
     # En fonction de la présence d'un chemin sur une des 6 directions on allume
     # les segments correspondant sur les faces
