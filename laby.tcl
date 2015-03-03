@@ -516,13 +516,6 @@ proc display {laby {type flat}} {
     global sin_PI_6
     global cos_PI_6
 
-    set size $laby_data($laby.size)
-
-    # Compute the graphic unit length, use float (2.0) and round for better
-    # centering of the grids.
-
-    set laby_display(grid_unit) [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
-
 	if {0} {
 
 		# TODO cette partie doit être déplacée dans un fichier séparé selon le nouveau pattern de découplage
@@ -1155,12 +1148,17 @@ if { $file_option == 1} {
     play_init $laby_display(canvas)
 
     # load the game play
-
+ 
     array set laby_data [read [open $file_name]]
 
     # display hexa representation
-	# TODO découplage des calculs et de l'affichage
-    display laby$laby_data(index) hexa
+	# TODO sur la fonction display
+    # display laby$laby_data(index) hexa
+
+    # Compute the graphic unit length, use float (2.0) and round for better centering of the grids.
+
+    set size $laby_data(laby$laby_data(index).size)
+    set laby_display(grid_unit) [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
 
     # display polygonal representation
 
