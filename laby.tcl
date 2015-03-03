@@ -1151,63 +1151,83 @@ if { $file_option == 1} {
  
     array set laby_data [read [open $file_name]]
 
-    # display hexa representation
-	# TODO sur la fonction display
-    # display laby$laby_data(index) hexa
-
     # Compute the graphic unit length, use float (2.0) and round for better centering of the grids.
 
     set size $laby_data(laby$laby_data(index).size)
     set laby_display(grid_unit) [expr round($laby_display(nb_pixel) / ($size * 2.0 + 2))]
 
-    # display polygonal representation
+	# available display format : hexa, flat, polygon, demi
+	set display_format "demi"
 
-    # polygon laby$laby_data(index) front
-    # polygon laby$laby_data(index) side
-    # polygon laby$laby_data(index) top
+    # display hexa and flat representation
 
-    # polygon_points_to_view laby$laby_data(index) front
-    # $laby_display(canvas) create polygon $polygon(front) -fill blue -tags front
-    # polygon_points_to_view laby$laby_data(index) side
-    # $laby_display(canvas) create polygon $polygon(side) -fill red -tags side
-    # polygon_points_to_view laby$laby_data(index) top
-    # $laby_display(canvas) create polygon $polygon(top) -fill white -tags top
+	if {[string compare $display_format "flat"] == 0} {
 
-    # display demi path representatin
+		# TODO sur la fonction display
+		display laby$laby_data(index) flat
 
-    demi laby$laby_data(index) front
-    demi laby$laby_data(index) side
-    demi laby$laby_data(index) top
+	} elseif {[string compare $display_format "hexa"] == 0} {
 
-    demi_points_to_view laby$laby_data(index) front
-    demi_points_to_view laby$laby_data(index) side
-    demi_points_to_view laby$laby_data(index) top
+		# TODO sur la fonction display
+		display laby$laby_data(index) hexa
 
-    demi_goals_and_cursor laby$laby_data(index)
+	} elseif {[string compare $display_format "polygonal"] == 0} {
 
-    foreach {path color} $demi_path_list(side) {
-		puts $path
-		$laby_display(canvas) create polygon $path -fill $color -tags side
-    }
-    foreach {path color} $demi_path_list(front) {
-		$laby_display(canvas) create polygon $path -fill $color -tags front
-    }
-    foreach {path color} $demi_path_list(top) {
-		$laby_display(canvas) create polygon $path -fill $color -tags top
-    }
+		# display polygonal representation
 
-    set rayon 7
-    foreach goal $goals {
+		polygon laby$laby_data(index) front
+		polygon laby$laby_data(index) side
+		polygon laby$laby_data(index) top
+
+		polygon_points_to_view laby$laby_data(index) front
+		$laby_display(canvas) create polygon $polygon(front) -fill blue -tags front
+		polygon_points_to_view laby$laby_data(index) side
+		$laby_display(canvas) create polygon $polygon(side) -fill red -tags side
+		polygon_points_to_view laby$laby_data(index) top
+		$laby_display(canvas) create polygon $polygon(top) -fill white -tags top
+
+	} elseif {[string compare $display_format "demi"] == 0} {
+
+		# display demi path representatin
+
+		demi laby$laby_data(index) front
+		demi laby$laby_data(index) side
+		demi laby$laby_data(index) top
+
+		demi_points_to_view laby$laby_data(index) front
+		demi_points_to_view laby$laby_data(index) side
+		demi_points_to_view laby$laby_data(index) top
+
+		demi_goals_and_cursor laby$laby_data(index)
+
+		foreach {path color} $demi_path_list(side) {
+			puts $path
+			$laby_display(canvas) create polygon $path -fill $color -tags side
+		}
+		foreach {path color} $demi_path_list(front) {
+			$laby_display(canvas) create polygon $path -fill $color -tags front
+		}
+		foreach {path color} $demi_path_list(top) {
+			$laby_display(canvas) create polygon $path -fill $color -tags top
+		}
+
+		set rayon 7
+		foreach goal $goals {
+			$laby_display(canvas) create oval \
+				[expr [lindex $goal 0] - $rayon] [expr [lindex $goal 1] - $rayon] \
+				[expr [lindex $goal 0] + $rayon] [expr [lindex $goal 1] + $rayon] \
+				-fill green -tags [lindex $goal 2]
+		}
+		set rayon 9
 		$laby_display(canvas) create oval \
-			[expr [lindex $goal 0] - $rayon] [expr [lindex $goal 1] - $rayon] \
-			[expr [lindex $goal 0] + $rayon] [expr [lindex $goal 1] + $rayon] \
-			-fill green -tags [lindex $goal 2]
-    }
-    set rayon 9
-    $laby_display(canvas) create oval \
-		[expr [lindex $cursor 0] - $rayon] [expr [lindex $cursor 1] - $rayon] \
-		[expr [lindex $cursor 0] + $rayon] [expr [lindex $cursor 1] + $rayon] \
-		-outline red -width 3 -tags [lindex $cursor 2]
+			[expr [lindex $cursor 0] - $rayon] [expr [lindex $cursor 1] - $rayon] \
+			[expr [lindex $cursor 0] + $rayon] [expr [lindex $cursor 1] + $rayon] \
+			-outline red -width 3 -tags [lindex $cursor 2]
+
+	} else {
+		puts "unknow display format $display_format"
+		exit 1
+	}
 
     update
 
