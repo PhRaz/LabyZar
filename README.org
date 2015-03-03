@@ -11,10 +11,10 @@ Pour afficher et jouer avec un labyrinthe :
 
 : ./laby.tcl -file <nom de fichier>
 
-Le joueur déplace le curseur central dans une des directions indiquées
-par les segments blancs.  A chaque mouvement du curseur le labyrinthe se
-modifie et de nouveaux segments apparaissent en blanc.  Le but du jeu
-est de supperposer les 3 points verts.
+Le joueur déplace le curseur central dans une des directions possibles.
+A chaque mouvement du curseur le labyrinthe se modifie et de nouveaux
+chemins sont construits.  Le but du jeu est de supperposer les 3 points
+verts.
 
 Les 6 mouvements possibles sont les suivants :
 
@@ -24,7 +24,7 @@ Les 6 mouvements possibles sont les suivants :
 :    /|\
 :  /  |  \
 : 4   5   6
-:
+
 : 1 : shift left
 : 2 : up
 : 3 : shoft right
@@ -36,9 +36,9 @@ Les 6 mouvements possibles sont les suivants :
 
 - faire un mode de commande plus user friendly
   - par mouvement de la souris (ou d'un doigt sur une interface tactile)
-  - à 1 doigt par impulsion, le curseur tourne automatiquement sur les chemins possibles, de
-	plus en plus rapidement (donc si on attend trop longtemp le déplacement est
-	choisi aléatoirement)
+  - à 1 doigt par impulsion, le curseur tourne automatiquement sur les
+	chemins possibles, de plus en plus rapidement (donc si on attend
+	trop longtemp le déplacement est choisi aléatoirement)
 - finition
   - enchaîner les tableaux en fonction de leur difficulté
   - faire une animation de fin de tableau
