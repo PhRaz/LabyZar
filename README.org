@@ -37,8 +37,8 @@ Les 6 mouvements possibles sont les suivants :
 - faire un mode de commande plus user friendly
   - par mouvement de la souris (ou d'un doigt sur une interface tactile)
   - à 1 doigt par impulsion, le curseur tourne automatiquement sur les
-	chemins possibles, de plus en plus rapidement (donc si on attend
-	trop longtemp le déplacement est choisi aléatoirement)
+    chemins possibles, de plus en plus rapidement (donc si on attend
+    trop longtemp le déplacement est choisi aléatoirement)
 - finition
   - enchaîner les tableaux en fonction de leur difficulté
   - faire une animation de fin de tableau
