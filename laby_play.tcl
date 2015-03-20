@@ -11,10 +11,7 @@ proc play_init {canvas} {
 
     # init pour l'utilisation des touches du clavier
     bind . <Key-Up> {play_up}
-    bind . <Key-Down> {
-	play_down
-	puts [lindex $laby_data($play_laby.grid) [get_index_from_coord_3d $play_laby $play_cursor]]
-    }
+    bind . <Key-Down> {play_down}
     bind . <Key-Left> {play_left}
     bind . <Key-Right> {play_right}
     bind . <Shift-Key-Left> {play_s_left}
