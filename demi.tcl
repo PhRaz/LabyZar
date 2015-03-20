@@ -1,7 +1,7 @@
 #
 # Fonctions de calcul des demis chemins comme une list de polygones, en effet on
 # ne peut pas joindre l'ensemble des points du dessin, il faut donc utiliser une
-# liste de polygones pour représenter une face du mabyrinthe.
+# liste de polygones pour représenter une face du labyrinthe.
 #
 
 # direction is the index on (x, -x, y, -y)
@@ -29,36 +29,24 @@ proc demi {laby face} {
     set size $laby_data($laby.size)
     set grid $laby_data($laby.face.$face.grid)
 
-    # liste de polygones qui constituent les demis chemins
+    # liste de lignes et couleur qui constituent les demis chemins
     set demi_path_list($face) [list]
 
     for {set x 0} {$x < $size} {incr x} {
 		for {set y 0} {$y < $size} {incr y} {
 			if {[demi_check_path $laby $face $x $y 0]} {
-				# chaques polygones de la liste est une liste de 4 points
+				# chaques élément de la liste est une liste de 2 points et d'une couleur
 				switch $face {
 					front {
-						lappend demi_path_list($face) [list \
-														   [expr $x] [expr $y - $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 0.5 + 0.5 * $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 0.5 - 0.5 * $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
+						lappend demi_path_list($face) [list [expr $x + 0.25] $y [expr $x + 0.5] $y]
 						lappend demi_path_list($face) red
 					}
 					side {
-						lappend demi_path_list($face) [list \
-														   [expr $x + 0.5 + $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x + 0.5] [expr $y - $WALL_WIDTH]]
+						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 0.75] $y]
 						lappend demi_path_list($face) green
 					}
 					top {
-						lappend demi_path_list($face) [list \
-														   [expr $x + 0.5 + 0.5 * $WALL_WIDTH] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1] [expr $y + $WALL_WIDTH] \
-														   [expr $x + 1 - $WALL_WIDTH] [expr $y - $WALL_WIDTH] \
-														   [expr $x + 0.5 - 0.5 * $WALL_WIDTH] [expr $y - $WALL_WIDTH]]
+						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 0.75] $y]
 						lappend demi_path_list($face) red
 					}
 				}
@@ -66,27 +54,15 @@ proc demi {laby face} {
 			if {[demi_check_path $laby $face $x $y 2]} {
 				switch $face {
 					front {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 1 - $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 1] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH]]
+						lappend demi_path_list($face) [list $x [expr $y + 0.5] $x [expr $y + 0.75]]
 						lappend demi_path_list($face) blue
 					}
 					side {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]]
+						lappend demi_path_list($face) [list $x [expr $y + 0.25] $x [expr $y + 0.5]]
 						lappend demi_path_list($face) blue
 					}
 					top {
-						lappend demi_path_list($face) [list \
-														   [expr $x - $WALL_WIDTH] [expr $y] \
-														   [expr $x - $WALL_WIDTH] [expr $y + 0.5] \
-														   [expr $x + $WALL_WIDTH] [expr $y + 0.5 + $WALL_WIDTH] \
-														   [expr $x + $WALL_WIDTH] [expr $y + $WALL_WIDTH]]
+						lappend demi_path_list($face) [list $x [expr $y + 0.25] $x [expr $y + 0.5]]
 						lappend demi_path_list($face) green
 					}
 				}
@@ -119,7 +95,7 @@ proc demi_points_to_view {laby face} {
     switch $face {
 		front {
 			set translation [list \
-								 [expr $middle - ($size - 1)  * $grid_unit * $cos_PI_6] \
+								 [expr $middle - ($size - 1) * $grid_unit * $cos_PI_6] \
 								 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
 		}
 		top {
@@ -158,11 +134,11 @@ proc demi_points_to_view {laby face} {
 
     set new_demi_path_list [list]
 
-    foreach {polygon color} $demi_path_list($face) {
+    foreach {line color} $demi_path_list($face) {
 
-		set new_polygon [list]
+		set new_line [list]
 
-		foreach {x y} $polygon {
+		foreach {x y} $line {
 
 			# Compute the point coordinates by using the xy direction
 			# vector.
@@ -170,9 +146,9 @@ proc demi_points_to_view {laby face} {
 			set new_x [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
 			set new_y [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
 
-			lappend new_polygon $new_x $new_y
+			lappend new_line $new_x $new_y
 		}
-		lappend new_demi_path_list $new_polygon $color
+		lappend new_demi_path_list $new_line $color
     }
     set demi_path_list($face) $new_demi_path_list
 }

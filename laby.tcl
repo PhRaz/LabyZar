@@ -1182,11 +1182,11 @@ if { $file_option == 1} {
 		polygon laby$laby_data(index) top
 
 		polygon_points_to_view laby$laby_data(index) front
-		$laby_display(canvas) create polygon $polygon(front) -fill blue -tags front
+		$laby_display(canvas) create polygon $polygon(front) -fill blue -tags front 
 		polygon_points_to_view laby$laby_data(index) side
-		$laby_display(canvas) create polygon $polygon(side) -fill red -tags side
+		$laby_display(canvas) create polygon $polygon(side) -fill red -tags side 
 		polygon_points_to_view laby$laby_data(index) top
-		$laby_display(canvas) create polygon $polygon(top) -fill white -tags top
+		$laby_display(canvas) create polygon $polygon(top) -fill white -tags top 
 
 	} elseif {[string compare $display_format "demi"] == 0} {
 
@@ -1203,14 +1203,13 @@ if { $file_option == 1} {
 		demi_goals_and_cursor laby$laby_data(index)
 
 		foreach {path color} $demi_path_list(side) {
-			puts $path
-			$laby_display(canvas) create polygon $path -fill $color -tags side
+			$laby_display(canvas) create line $path -fill $color -tags side -width [expr $laby_display(grid_unit) / 4] -capstyle round
 		}
 		foreach {path color} $demi_path_list(front) {
-			$laby_display(canvas) create polygon $path -fill $color -tags front
+			$laby_display(canvas) create line $path -fill $color -tags front -width [expr $laby_display(grid_unit) / 4] -capstyle round
 		}
 		foreach {path color} $demi_path_list(top) {
-			$laby_display(canvas) create polygon $path -fill $color -tags top
+			$laby_display(canvas) create line $path -fill $color -tags top -width [expr $laby_display(grid_unit) / 4] -capstyle round
 		}
 
 		set rayon 7
