@@ -24,8 +24,6 @@ proc demi {laby face} {
     global demi_path_list
 
 
-    set WALL_WIDTH 0.2
-
     set size $laby_data($laby.size)
     set grid $laby_data($laby.face.$face.grid)
 
@@ -38,15 +36,15 @@ proc demi {laby face} {
 				# chaques élément de la liste est une liste de 2 points et d'une couleur
 				switch $face {
 					front {
-						lappend demi_path_list($face) [list [expr $x + 0.25] $y [expr $x + 0.5] $y]
+						lappend demi_path_list($face) [list $x $y]
 						lappend demi_path_list($face) red
 					}
 					side {
-						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 0.75] $y]
+						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 1] $y]
 						lappend demi_path_list($face) green
 					}
 					top {
-						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 0.75] $y]
+						lappend demi_path_list($face) [list [expr $x + 0.5] $y [expr $x + 1] $y]
 						lappend demi_path_list($face) red
 					}
 				}
@@ -54,15 +52,15 @@ proc demi {laby face} {
 			if {[demi_check_path $laby $face $x $y 2]} {
 				switch $face {
 					front {
-						lappend demi_path_list($face) [list $x [expr $y + 0.5] $x [expr $y + 0.75]]
+						lappend demi_path_list($face) [list $x [expr $y + 0.5] $x [expr $y + 1]]
 						lappend demi_path_list($face) blue
 					}
 					side {
-						lappend demi_path_list($face) [list $x [expr $y + 0.25] $x [expr $y + 0.5]]
+						lappend demi_path_list($face) [list $x $y]
 						lappend demi_path_list($face) blue
 					}
 					top {
-						lappend demi_path_list($face) [list $x [expr $y + 0.25] $x [expr $y + 0.5]]
+						lappend demi_path_list($face) [list $x $y]
 						lappend demi_path_list($face) green
 					}
 				}
@@ -96,12 +94,12 @@ proc demi_points_to_view {laby face} {
 		front {
 			set translation [list \
 								 [expr $middle - ($size - 1) * $grid_unit * $cos_PI_6] \
-								 [expr $middle + ($size - 1) * $grid_unit *  $sin_PI_6]]
+								 [expr $middle + ($size - 1) * $grid_unit * $sin_PI_6]]
 		}
 		top {
 			set translation [list \
 								 $middle \
-								 [expr $middle - ($size - 1) * 2 * $grid_unit *  $sin_PI_6]]
+								 [expr $middle - ($size - 1) * 2 * $grid_unit * $sin_PI_6]]
 		}
 		side {
 			set translation [list \
@@ -136,7 +134,7 @@ proc demi_points_to_view {laby face} {
 
     foreach {line color} $demi_path_list($face) {
 
-		set new_line [list]
+		set new_point [list]
 
 		foreach {x y} $line {
 
@@ -146,9 +144,9 @@ proc demi_points_to_view {laby face} {
 			set new_x [expr $x_orig + $x * [lindex $dir_x 0] + $y * [lindex $dir_x 1]]
 			set new_y [expr $y_orig + $x * [lindex $dir_y 0] + $y * [lindex $dir_y 1]]
 
-			lappend new_line $new_x $new_y
+			lappend new_point $new_x $new_y
 		}
-		lappend new_demi_path_list $new_line $color
+		lappend new_demi_path_list $new_point $color
     }
     set demi_path_list($face) $new_demi_path_list
 }

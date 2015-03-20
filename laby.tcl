@@ -1203,13 +1203,31 @@ if { $file_option == 1} {
 		demi_goals_and_cursor laby$laby_data(index)
 
 		foreach {path color} $demi_path_list(side) {
-			$laby_display(canvas) create line $path -fill $color -tags side -width [expr $laby_display(grid_unit) / 4] -capstyle round
+			foreach {x y} $path {
+				set x1 [expr $x - $laby_display(grid_unit) / 4]
+				set y1 [expr $y - $laby_display(grid_unit) / 4]
+				set x2 [expr $x + $laby_display(grid_unit) / 4]
+				set y2 [expr $y + $laby_display(grid_unit) / 4]
+				$laby_display(canvas) create oval $x1 $y1 $x2 $y2 -outline $color -tags side
+			}
 		}
 		foreach {path color} $demi_path_list(front) {
-			$laby_display(canvas) create line $path -fill $color -tags front -width [expr $laby_display(grid_unit) / 4] -capstyle round
+			foreach {x y} $path {
+				set x1 [expr $x - $laby_display(grid_unit) / 4]
+				set y1 [expr $y - $laby_display(grid_unit) / 4]
+				set x2 [expr $x + $laby_display(grid_unit) / 4]
+				set y2 [expr $y + $laby_display(grid_unit) / 4]
+				$laby_display(canvas) create oval $x1 $y1 $x2 $y2 -outline $color -tags front
+			}
 		}
 		foreach {path color} $demi_path_list(top) {
-			$laby_display(canvas) create line $path -fill $color -tags top -width [expr $laby_display(grid_unit) / 4] -capstyle round
+			foreach {x y} $path {
+				set x1 [expr $x - $laby_display(grid_unit) / 4]
+				set y1 [expr $y - $laby_display(grid_unit) / 4]
+				set x2 [expr $x + $laby_display(grid_unit) / 4]
+				set y2 [expr $y + $laby_display(grid_unit) / 4]
+				$laby_display(canvas) create oval $x1 $y1 $x2 $y2 -outline $color -tags top
+			}
 		}
 
 		set rayon 7
